@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Gnocchi.Backend.API/Gnocchi.Backend.API.csproj" />
+  <Project Path="Gnocchi.Backend.App/Gnocchi.Backend.App.csproj" />
+  <Project Path="Gnocchi.Backend.BLL/Gnocchi.Backend.BLL.csproj" />
+  <Project Path="Gnocchi.Backend.DAL/Gnocchi.Backend.DAL.csproj" />
+  <Project Path="Gnocchi.Backend.Models/Gnocchi.Backend.Models.csproj" />
+  <Project Path="Gnocchi.Backend.Tests/Gnocchi.Backend.Tests.csproj" />
+</Solution>
