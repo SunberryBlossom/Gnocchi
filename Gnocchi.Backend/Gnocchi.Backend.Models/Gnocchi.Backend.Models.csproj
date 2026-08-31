@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\Gnocchi.Backend.Shared\Gnocchi.Backend.Shared.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -7,3 +11,5 @@
   </PropertyGroup>
 
 </Project>
+
+<!-- TODO Look over all the models collections and truly think if these have to be lists, or could be others... maybe sets?-->
