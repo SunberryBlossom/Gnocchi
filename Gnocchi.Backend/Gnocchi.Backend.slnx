@@ -4,5 +4,6 @@
   <Project Path="Gnocchi.Backend.BLL/Gnocchi.Backend.BLL.csproj" />
   <Project Path="Gnocchi.Backend.DAL/Gnocchi.Backend.DAL.csproj" />
   <Project Path="Gnocchi.Backend.Models/Gnocchi.Backend.Models.csproj" />
+  <Project Path="Gnocchi.Backend.Shared/Gnocchi.Backend.Shared.csproj" />
   <Project Path="Gnocchi.Backend.Tests/Gnocchi.Backend.Tests.csproj" />
 </Solution>
