@@ -31,7 +31,7 @@ namespace Gnocchi.Backend.DAL.Migrations
                     b.Property<int>("Method")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ScoreId")
+                    b.Property<Guid?>("ScoreId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId")
@@ -53,9 +53,10 @@ namespace Gnocchi.Backend.DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ScoreId")
+                    b.Property<Guid?>("ScoreId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId")
@@ -85,9 +86,10 @@ namespace Gnocchi.Backend.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ScoreId")
+                    b.Property<Guid?>("ScoreId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId")
@@ -243,7 +245,7 @@ namespace Gnocchi.Backend.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Type")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -394,8 +396,7 @@ namespace Gnocchi.Backend.DAL.Migrations
                     b.HasOne("Gnocchi.Backend.Models.Score", "Score")
                         .WithMany("CookingMethods")
                         .HasForeignKey("ScoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Gnocchi.Backend.Models.User", null)
                         .WithMany("CookingMethods")
@@ -409,8 +410,7 @@ namespace Gnocchi.Backend.DAL.Migrations
                     b.HasOne("Gnocchi.Backend.Models.Score", "Score")
                         .WithMany("Dishes")
                         .HasForeignKey("ScoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Gnocchi.Backend.Models.User", null)
                         .WithMany("Dishes")
@@ -431,9 +431,7 @@ namespace Gnocchi.Backend.DAL.Migrations
                 {
                     b.HasOne("Gnocchi.Backend.Models.Score", "Score")
                         .WithMany("Ingredients")
-                        .HasForeignKey("ScoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ScoreId");
 
                     b.HasOne("Gnocchi.Backend.Models.User", null)
                         .WithMany("Ingredients")
@@ -466,13 +464,13 @@ namespace Gnocchi.Backend.DAL.Migrations
                     b.HasOne("Gnocchi.Backend.Models.CookingMethod", "CookingMethod")
                         .WithMany("Results")
                         .HasForeignKey("CookingMethodId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Gnocchi.Backend.Models.Ingredient", "Ingredient")
                         .WithMany("Results")
                         .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Gnocchi.Backend.Models.User", null)
