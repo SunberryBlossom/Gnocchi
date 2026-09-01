@@ -10,6 +10,13 @@ public class GnocchiDbContext : DbContext
     #endregion
 
     #region DBSets
+    public DbSet<CookingMethod> CookingMethods { get; set; }
     public DbSet<Dish> Dishes { get; set; }
+    public DbSet<Ingredient> Ingredients { get; set; }
+    public DbSet<RecipeStep> RecipeSteps { get; set; }
+    public DbSet<Result> Results { get; set; }
+    public DbSet<Score> Scores { get; set; }
+    public DbSet<Variant> Variants { get; set; }
+    // TODO: Add Users DbSet?
     #endregion
 }
