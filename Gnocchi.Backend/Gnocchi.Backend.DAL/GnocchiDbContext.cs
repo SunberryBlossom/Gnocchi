@@ -1,4 +1,5 @@
 using Gnocchi.Backend.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore; // To inherit from superclass IdentityDbContext<T>
 using Microsoft.EntityFrameworkCore; // To use DbSet
 
@@ -18,5 +19,11 @@ public class GnocchiDbContext : IdentityDbContext<User>
     public DbSet<Result> Results { get; set; }
     public DbSet<Score> Scores { get; set; }
     public DbSet<Variant> Variants { get; set; }
+    #endregion
+    #region Design time configuration
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+    }
     #endregion
 }
