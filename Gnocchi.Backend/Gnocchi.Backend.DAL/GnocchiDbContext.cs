@@ -1,9 +1,10 @@
 using Gnocchi.Backend.Models;
-using Microsoft.EntityFrameworkCore; // To use DbContext superclass
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore; // To inherit from superclass IdentityDbContext<T>
+using Microsoft.EntityFrameworkCore; // To use DbSet
 
 namespace Gnocchi.Backend.DAL;
 
-public class GnocchiDbContext : DbContext
+public class GnocchiDbContext : IdentityDbContext<User>
 {
     #region Constructors
     public GnocchiDbContext(DbContextOptions<GnocchiDbContext> options) : base(options) { }
@@ -17,6 +18,5 @@ public class GnocchiDbContext : DbContext
     public DbSet<Result> Results { get; set; }
     public DbSet<Score> Scores { get; set; }
     public DbSet<Variant> Variants { get; set; }
-    // TODO: Add Users DbSet?
     #endregion
 }
