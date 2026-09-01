@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11" />
+    <Using Include="System.ComponentModel.DataAnnotations"/>
+    <Using Include="System.ComponentModel.DataAnnotations.Schema"/>
   </ItemGroup>
 
   <PropertyGroup>
