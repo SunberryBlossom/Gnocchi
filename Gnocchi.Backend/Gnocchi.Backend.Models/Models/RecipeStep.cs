@@ -3,7 +3,7 @@ namespace Gnocchi.Backend.Models;
 public class RecipeStep
 {
     #region Properties
-    public Guid RecipeId { get; init; }
+    public Guid RecipeStepId { get; init; }
     #endregion
     #region Navigation properties
     public Guid ResultId { get; set; }
