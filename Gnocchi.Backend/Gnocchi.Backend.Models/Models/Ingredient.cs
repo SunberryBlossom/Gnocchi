@@ -4,11 +4,14 @@ public class Ingredient
 {
     #region Properties
     public Guid IngredientId { get; init; }
+    [Required]
     public string? Name { get; set; }
+    [Required]
     public bool EdibleRaw { get; set; }
     #endregion
     #region Navigation properties
-    public Guid ScoreId { get; set; }
+    [ForeignKey(nameof(Score))]
+    public Guid? ScoreId { get; set; }
     public Score? Score { get; set; }
     public ICollection<Result>? Results { get; set; }
     #endregion
