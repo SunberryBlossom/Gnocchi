@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Gnocchi.Backend.BLL\Gnocchi.Backend.BLL.csproj" />
     <ProjectReference Include="..\Gnocchi.Backend.Models\Gnocchi.Backend.Models.csproj" />
   </ItemGroup>
 

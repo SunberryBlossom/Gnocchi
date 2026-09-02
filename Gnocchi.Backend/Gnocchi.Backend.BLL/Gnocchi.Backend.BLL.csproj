@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Gnocchi.Backend.DAL\Gnocchi.Backend.DAL.csproj" />
+    <ProjectReference Include="..\Gnocchi.Backend.Models\Gnocchi.Backend.Models.csproj" />
     <Using Include="Gnocchi.Backend.Models" />
   </ItemGroup>
 

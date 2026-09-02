@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Gnocchi.Backend.DAL\Gnocchi.Backend.DAL.csproj" /> <!-- TODO: Check
-    if this dependency is correctly wired. Should it not be implicit by referring to BLL?-->
+    <ProjectReference Include="..\Gnocchi.Backend.App\Gnocchi.Backend.App.csproj" />
+    <ProjectReference Include="..\Gnocchi.Backend.DAL\Gnocchi.Backend.DAL.csproj" />
   </ItemGroup>
 
 </Project>
