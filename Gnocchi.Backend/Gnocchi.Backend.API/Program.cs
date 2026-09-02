@@ -1,4 +1,6 @@
+using Gnocchi.Backend.Bll.Interfaces;
 using Gnocchi.Backend.DAL;
+using Gnocchi.Backend.DAL.Repositories;
 using Gnocchi.Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +18,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
         builder.Services.AddAuthorization();
+        builder.Services.AddScoped<IDishRepository, DishRepository>();
         #endregion
         #region Middleware configuration
         var app = builder.Build();
