@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="..\Gnocchi.Backend.Models\Gnocchi.Backend.Models.csproj" />
-    <Using Include="Gnocchi.Backend.Models" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  <ItemGroup Label="Global usings">
+    <Using Include="Gnocchi.Backend.Models" />
+  </ItemGroup>
+  <ItemGroup Label="Project references">
+    <ProjectReference Include="..\Gnocchi.Backend.Models\Gnocchi.Backend.Models.csproj" />
+    <ProjectReference Include="..\Gnocchi.Backend.Shared\Gnocchi.Backend.Shared.csproj" />
+  </ItemGroup>
 </Project>

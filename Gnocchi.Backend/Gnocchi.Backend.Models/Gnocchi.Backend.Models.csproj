@@ -1,22 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="..\Gnocchi.Backend.Shared\Gnocchi.Backend.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11" />
-    <Using Include="System.ComponentModel.DataAnnotations"/>
-    <Using Include="System.ComponentModel.DataAnnotations.Schema"/>
-    <Using Include="Microsoft.EntityFrameworkCore"/>
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  <ItemGroup Label="ASP.NET Identity package and global usings">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11" />
+    <Using Include="System.ComponentModel.DataAnnotations"/>
+    <Using Include="System.ComponentModel.DataAnnotations.Schema"/>
+    <Using Include="Microsoft.EntityFrameworkCore"/>
+  </ItemGroup>
+  <ItemGroup Label="Project references">
+    <ProjectReference Include="..\Gnocchi.Backend.Shared\Gnocchi.Backend.Shared.csproj" />
+  </ItemGroup>
 </Project>
 
 <!-- TODO Look over all the models collections and truly think if these have to be lists, or could be others... maybe sets?-->
