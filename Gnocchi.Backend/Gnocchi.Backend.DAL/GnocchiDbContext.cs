@@ -1,5 +1,4 @@
 using Gnocchi.Backend.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore; // To inherit from superclass IdentityDbContext<T>
 using Microsoft.EntityFrameworkCore; // To use DbSet
 
