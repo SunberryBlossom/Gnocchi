@@ -24,17 +24,17 @@ namespace Gnocchi.Backend.DAL.Migrations
 
             modelBuilder.Entity("Gnocchi.Backend.Models.CookingMethod", b =>
                 {
-                    b.Property<Guid>("CookingMethodId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CookingMethodId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Method")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ScoreId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ScoreId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CookingMethodId");
@@ -48,22 +48,23 @@ namespace Gnocchi.Backend.DAL.Migrations
 
             modelBuilder.Entity("Gnocchi.Backend.Models.Dish", b =>
                 {
-                    b.Property<Guid>("DishId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("DishId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ScoreId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("ScoreId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("VariantId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("VariantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("DishId");
 
@@ -78,9 +79,8 @@ namespace Gnocchi.Backend.DAL.Migrations
 
             modelBuilder.Entity("Gnocchi.Backend.Models.Ingredient", b =>
                 {
-                    b.Property<Guid>("IngredientId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("IngredientId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("EdibleRaw")
                         .HasColumnType("bit");
@@ -89,10 +89,11 @@ namespace Gnocchi.Backend.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ScoreId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ScoreId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("IngredientId");
@@ -106,15 +107,20 @@ namespace Gnocchi.Backend.DAL.Migrations
 
             modelBuilder.Entity("Gnocchi.Backend.Models.RecipeStep", b =>
                 {
-                    b.Property<Guid>("RecipeStepId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("RecipeStepId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("DishId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("DishId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("ResultId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ResultId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("RecipeStepId");
 
@@ -122,29 +128,33 @@ namespace Gnocchi.Backend.DAL.Migrations
 
                     b.HasIndex("ResultId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("RecipeSteps");
                 });
 
             modelBuilder.Entity("Gnocchi.Backend.Models.Result", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ResultId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CookingMethodId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IngredientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("CookingMethodId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("IngredientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ResultId");
 
                     b.HasIndex("CookingMethodId");
 
@@ -157,14 +167,14 @@ namespace Gnocchi.Backend.DAL.Migrations
 
             modelBuilder.Entity("Gnocchi.Backend.Models.Score", b =>
                 {
-                    b.Property<Guid>("ScoreId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ScoreId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ScoreId");
@@ -241,14 +251,14 @@ namespace Gnocchi.Backend.DAL.Migrations
 
             modelBuilder.Entity("Gnocchi.Backend.Models.Variant", b =>
                 {
-                    b.Property<Guid>("VariantId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("VariantId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("VariantId");
@@ -398,11 +408,15 @@ namespace Gnocchi.Backend.DAL.Migrations
                         .HasForeignKey("ScoreId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Gnocchi.Backend.Models.User", null)
+                    b.HasOne("Gnocchi.Backend.Models.User", "User")
                         .WithMany("CookingMethods")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Score");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Gnocchi.Backend.Models.Dish", b =>
@@ -412,17 +426,21 @@ namespace Gnocchi.Backend.DAL.Migrations
                         .HasForeignKey("ScoreId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Gnocchi.Backend.Models.User", null)
+                    b.HasOne("Gnocchi.Backend.Models.User", "User")
                         .WithMany("Dishes")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Gnocchi.Backend.Models.Variant", "Variant")
                         .WithMany("Dishes")
                         .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Score");
+
+                    b.Navigation("User");
 
                     b.Navigation("Variant");
                 });
@@ -433,11 +451,15 @@ namespace Gnocchi.Backend.DAL.Migrations
                         .WithMany("Ingredients")
                         .HasForeignKey("ScoreId");
 
-                    b.HasOne("Gnocchi.Backend.Models.User", null)
+                    b.HasOne("Gnocchi.Backend.Models.User", "User")
                         .WithMany("Ingredients")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Score");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Gnocchi.Backend.Models.RecipeStep", b =>
@@ -445,18 +467,26 @@ namespace Gnocchi.Backend.DAL.Migrations
                     b.HasOne("Gnocchi.Backend.Models.Dish", "Dish")
                         .WithMany("RecipeSteps")
                         .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Gnocchi.Backend.Models.Result", "Result")
                         .WithMany("RecipeSteps")
                         .HasForeignKey("ResultId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("Gnocchi.Backend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Dish");
 
                     b.Navigation("Result");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Gnocchi.Backend.Models.Result", b =>
@@ -473,27 +503,39 @@ namespace Gnocchi.Backend.DAL.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Gnocchi.Backend.Models.User", null)
+                    b.HasOne("Gnocchi.Backend.Models.User", "User")
                         .WithMany("Results")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CookingMethod");
 
                     b.Navigation("Ingredient");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Gnocchi.Backend.Models.Score", b =>
                 {
-                    b.HasOne("Gnocchi.Backend.Models.User", null)
+                    b.HasOne("Gnocchi.Backend.Models.User", "User")
                         .WithMany("Scores")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Gnocchi.Backend.Models.Variant", b =>
                 {
-                    b.HasOne("Gnocchi.Backend.Models.User", null)
+                    b.HasOne("Gnocchi.Backend.Models.User", "User")
                         .WithMany("Variants")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

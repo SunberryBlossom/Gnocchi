@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Gnocchi.Backend.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class initCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -160,9 +160,9 @@ namespace Gnocchi.Backend.DAL.Migrations
                 name: "Scores",
                 columns: table => new
                 {
-                    ScoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScoreId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,16 +171,17 @@ namespace Gnocchi.Backend.DAL.Migrations
                         name: "FK_Scores_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Variants",
                 columns: table => new
                 {
-                    VariantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VariantId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,17 +190,18 @@ namespace Gnocchi.Backend.DAL.Migrations
                         name: "FK_Variants_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CookingMethods",
                 columns: table => new
                 {
-                    CookingMethodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CookingMethodId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Method = table.Column<int>(type: "int", nullable: false),
-                    ScoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ScoreId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -208,7 +210,8 @@ namespace Gnocchi.Backend.DAL.Migrations
                         name: "FK_CookingMethods_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CookingMethods_Scores_ScoreId",
                         column: x => x.ScoreId,
@@ -220,11 +223,11 @@ namespace Gnocchi.Backend.DAL.Migrations
                 name: "Ingredients",
                 columns: table => new
                 {
-                    IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IngredientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EdibleRaw = table.Column<bool>(type: "bit", nullable: false),
-                    ScoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ScoreId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -233,7 +236,8 @@ namespace Gnocchi.Backend.DAL.Migrations
                         name: "FK_Ingredients_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Ingredients_Scores_ScoreId",
                         column: x => x.ScoreId,
@@ -245,11 +249,11 @@ namespace Gnocchi.Backend.DAL.Migrations
                 name: "Dishes",
                 columns: table => new
                 {
-                    DishId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DishId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VariantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ScoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    VariantId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ScoreId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -258,7 +262,8 @@ namespace Gnocchi.Backend.DAL.Migrations
                         name: "FK_Dishes_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Dishes_Scores_ScoreId",
                         column: x => x.ScoreId,
@@ -268,28 +273,28 @@ namespace Gnocchi.Backend.DAL.Migrations
                         name: "FK_Dishes_Variants_VariantId",
                         column: x => x.VariantId,
                         principalTable: "Variants",
-                        principalColumn: "VariantId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "VariantId");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Results",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ResultId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CookingMethodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IngredientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CookingMethodId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Results", x => x.Id);
+                    table.PrimaryKey("PK_Results", x => x.ResultId);
                     table.ForeignKey(
                         name: "FK_Results_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Results_CookingMethods_CookingMethodId",
                         column: x => x.CookingMethodId,
@@ -306,25 +311,30 @@ namespace Gnocchi.Backend.DAL.Migrations
                 name: "RecipeSteps",
                 columns: table => new
                 {
-                    RecipeStepId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ResultId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DishId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RecipeStepId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ResultId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DishId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RecipeSteps", x => x.RecipeStepId);
                     table.ForeignKey(
+                        name: "FK_RecipeSteps_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_RecipeSteps_Dishes_DishId",
                         column: x => x.DishId,
                         principalTable: "Dishes",
-                        principalColumn: "DishId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "DishId");
                     table.ForeignKey(
                         name: "FK_RecipeSteps_Results_ResultId",
                         column: x => x.ResultId,
                         principalTable: "Results",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ResultId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -410,6 +420,11 @@ namespace Gnocchi.Backend.DAL.Migrations
                 name: "IX_RecipeSteps_ResultId",
                 table: "RecipeSteps",
                 column: "ResultId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeSteps_UserId",
+                table: "RecipeSteps",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Results_CookingMethodId",
