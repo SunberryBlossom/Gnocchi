@@ -1,18 +1,22 @@
 using Gnocchi.Backend.Shared.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gnocchi.Backend.Models;
 
 public class CookingMethod
 {
     #region Properties
-    public Guid CookingMethodId { get; set; }
+    public string? CookingMethodId { get; set; }
     [Required]
     public Method Method { get; set; }
     #endregion
     #region Navigation Properties
+    [ForeignKey(nameof(User))]
+    public string? UserId { get; set; }
+    [Required]
+    [DeleteBehavior(DeleteBehavior.Cascade)]
+    public User? User { get; set; }
     [ForeignKey(nameof(Score))]
-    public Guid? ScoreId { get; set; }
+    public string? ScoreId { get; set; }
     [DeleteBehavior(DeleteBehavior.NoAction)]
     public Score? Score { get; set; }
     public ICollection<Result>? Results { get; set; }

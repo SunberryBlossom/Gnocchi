@@ -1,24 +1,26 @@
-
-using Microsoft.EntityFrameworkCore;
-
 namespace Gnocchi.Backend.Models;
 
 public class Result
 {
     // TODO: The delete behaviours are NOT optimised here... Both Cannot be cascading due to race issues.
     #region Properties
-    public Guid Id { get; init; }
+    public string? ResultId { get; init; }
     [Required]
     public string? Comment { get; set; }
     #endregion
     #region navigation properties
+    [ForeignKey(nameof(User))]
+    public string? UserId { get; set; }
+    [Required]
+    [DeleteBehavior(DeleteBehavior.Cascade)]
+    public User? User { get; set; }
     [ForeignKey(nameof(Ingredient))]
-    public Guid IngredientId { get; set; }
+    public string? IngredientId { get; set; }
     [Required]
     [DeleteBehavior(DeleteBehavior.NoAction)]
     public Ingredient? Ingredient { get; set; }
     [ForeignKey(nameof(CookingMethod))]
-    public Guid CookingMethodId { get; set; }
+    public string? CookingMethodId { get; set; }
     [Required]
     [DeleteBehavior(DeleteBehavior.NoAction)]
     public CookingMethod? CookingMethod { get; set; }
