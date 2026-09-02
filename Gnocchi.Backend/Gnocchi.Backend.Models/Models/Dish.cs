@@ -16,7 +16,7 @@ public class Dish
     [ForeignKey(nameof(Variant))]
     public string? VariantId { get; set; }
     [Required]
-    [DeleteBehavior(DeleteBehavior.Cascade)]
+    [DeleteBehavior(DeleteBehavior.ClientCascade)]
     public Variant? Variant { get; set; }
     [ForeignKey(nameof(Score))]
     public string? ScoreId { get; set; }

@@ -14,12 +14,12 @@ public class RecipeStep
     [ForeignKey(nameof(Result))]
     public string? ResultId { get; set; }
     [Required]
-    [DeleteBehavior(DeleteBehavior.Cascade)]
+    [DeleteBehavior(DeleteBehavior.ClientCascade)]
     public Result? Result { get; set; }
     [ForeignKey(nameof(Dish))]
     public string? DishId { get; set; }
     [Required]
-    [DeleteBehavior(DeleteBehavior.Cascade)]
+    [DeleteBehavior(DeleteBehavior.ClientCascade)]
     public Dish? Dish { get; set; }
     #endregion
 }
