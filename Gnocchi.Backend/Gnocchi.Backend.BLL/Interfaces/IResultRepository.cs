@@ -7,16 +7,16 @@ public interface IResultRepository
     #endregion
     #region Read signatures
     public Task<IReadOnlyList<Result>> GetAllAsync(CancellationToken ct = default);
-    public Task<Result?> GetAsync(Guid id, CancellationToken ct = default);
-    public Task<Result?> GetFullAsync(Guid id, CancellationToken ct = default);
-    public Task<Result?> GetWithRecipeStepsAsync(Guid id, CancellationToken ct = default);
-    public Task<Result?> GetWithCookingMethodAsync(Guid id, CancellationToken ct = default);
-    public Task<Result?> GetWithIngredientAsync(Guid id, CancellationToken ct = default);
+    public Task<Result?> GetAsync(string id, CancellationToken ct = default);
+    public Task<Result?> GetFullAsync(string id, CancellationToken ct = default);
+    public Task<Result?> GetWithRecipeStepsAsync(string id, CancellationToken ct = default);
+    public Task<Result?> GetWithCookingMethodAsync(string id, CancellationToken ct = default);
+    public Task<Result?> GetWithIngredientAsync(string id, CancellationToken ct = default);
     #endregion
     #region Update signatures
-    public Task<Result?> UpdateCommentAsync(Guid id, string newComment, CancellationToken ct = default);
+    public Task<Result?> UpdateCommentAsync(string id, string newComment, CancellationToken ct = default);
     #endregion
     #region Delete signatures
-    public Task DeleteAsync(Guid id, CancellationToken ct = default);
+    public Task DeleteAsync(string id, CancellationToken ct = default);
     #endregion
 }

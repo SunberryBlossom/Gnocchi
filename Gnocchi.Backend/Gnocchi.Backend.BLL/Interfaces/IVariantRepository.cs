@@ -7,13 +7,13 @@ public interface IVariantRepository
     #endregion
     #region Read signatures
     public Task<IReadOnlyList<Variant>> GetAllAsync(CancellationToken ct = default);
-    public Task<Result?> GetAsync(Guid id, CancellationToken ct = default);
-    public Task<Result?> GetWithDishesAsync(Guid id, CancellationToken ct = default);
+    public Task<Result?> GetAsync(string id, CancellationToken ct = default);
+    public Task<Result?> GetWithDishesAsync(string id, CancellationToken ct = default);
     #endregion
     #region Update signatures
     // None! If you update the enum field, you are essentially creating a new Variant, not updating it.
     #endregion
     #region Delete signatures
-    public Task DeleteAsync(Guid id, CancellationToken ct = default);
+    public Task DeleteAsync(string id, CancellationToken ct = default);
     #endregion
 }
