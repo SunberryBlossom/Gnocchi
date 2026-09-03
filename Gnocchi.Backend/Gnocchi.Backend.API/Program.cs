@@ -1,4 +1,4 @@
-using Gnocchi.Backend.Bll.Interfaces;
+using Gnocchi.Backend.BLL.Interfaces;
 using Gnocchi.Backend.DAL;
 using Gnocchi.Backend.DAL.Repositories;
 using Gnocchi.Backend.Models;
@@ -18,6 +18,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
         builder.Services.AddAuthorization();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<IDishRepository, DishRepository>();
         builder.Services.AddScoped<ICookingMethodRepository, CookingMethodRepository>();
         builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
