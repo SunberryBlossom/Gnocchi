@@ -3,7 +3,7 @@ namespace Gnocchi.Backend.Bll.Interfaces;
 public interface IResultRepository
 {
     #region Create signatures
-    public Task AddAsync(Result result, CancellationToken ct = default);
+    public void Add(Result result);
     #endregion
     #region Read signatures
     public Task<IReadOnlyList<Result>> GetAllAsync(CancellationToken ct = default);
@@ -17,6 +17,6 @@ public interface IResultRepository
     public Task<Result?> UpdateCommentAsync(string id, string newComment, CancellationToken ct = default);
     #endregion
     #region Delete signatures
-    public Task DeleteAsync(string id, CancellationToken ct = default);
+    public void Remove(Result result);
     #endregion
 }
