@@ -19,6 +19,13 @@ public class Program
         builder.Services.AddOpenApi();
         builder.Services.AddAuthorization();
         builder.Services.AddScoped<IDishRepository, DishRepository>();
+        builder.Services.AddScoped<ICookingMethodRepository, CookingMethodRepository>();
+        builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
+        builder.Services.AddScoped<IScoreRepository, ScoreRepository>();
+        builder.Services.AddScoped<IVariantRepository, VariantRepository>();
+        builder.Services.AddScoped<IRecipeStepRepository, RecipeStepRepository>();
+        builder.Services.AddScoped<IResultRepository, ResultRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
         #endregion
         #region Middleware configuration
         var app = builder.Build();
