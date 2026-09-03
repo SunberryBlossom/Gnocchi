@@ -1,7 +1,3 @@
-using Gnocchi.Backend.Bll.Interfaces;
-using Gnocchi.Backend.Models;
-using Microsoft.EntityFrameworkCore;
-
 namespace Gnocchi.Backend.DAL.Repositories;
 
 public class DishRepository : IDishRepository

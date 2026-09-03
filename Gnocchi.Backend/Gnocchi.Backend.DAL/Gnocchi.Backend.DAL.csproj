@@ -16,6 +16,11 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup Label="Global usings">
+    <Using Include="Gnocchi.Backend.BLL.Interfaces" />
+    <Using Include="Gnocchi.Backend.Models" />
+    <Using Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
   <ItemGroup Label="Project references">
     <ProjectReference Include="..\Gnocchi.Backend.App\Gnocchi.Backend.App.csproj" />
     <ProjectReference Include="..\Gnocchi.Backend.BLL\Gnocchi.Backend.BLL.csproj" />
