@@ -1,4 +1,4 @@
-namespace Gnocchi.Backend.Bll.Interfaces;
+namespace Gnocchi.Backend.BLL.Interfaces;
 
 public interface IRecipeStepRepository // TODO: If time exists, check if repositories for junction tables are really a thing.
 {

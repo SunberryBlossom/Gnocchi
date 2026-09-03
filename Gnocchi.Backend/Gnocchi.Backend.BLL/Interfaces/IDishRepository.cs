@@ -1,4 +1,4 @@
-namespace Gnocchi.Backend.Bll.Interfaces;
+namespace Gnocchi.Backend.BLL.Interfaces;
 
 public interface IDishRepository
 {
