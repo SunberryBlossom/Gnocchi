@@ -3,7 +3,7 @@ namespace Gnocchi.Backend.Bll.Interfaces;
 public interface IIngredientRepository
 {
     #region Create signatures
-    public Task AddAsync(Ingredient ingredient, CancellationToken ct = default);
+    public void Add(Ingredient ingredient);
     #endregion
     #region Read signatures
     public Task<IReadOnlyList<Ingredient>> GetAllAsync(CancellationToken ct = default);
@@ -18,6 +18,6 @@ public interface IIngredientRepository
     public Task<Ingredient?> UpdateScoreAsync(string ingredientId, string newScoreId, CancellationToken ct = default);
     #endregion
     #region Delete signatures
-    public Task DeleteAsync(string id, CancellationToken ct = default);
+    public void Remove(Ingredient ingredient);
     #endregion
 }
