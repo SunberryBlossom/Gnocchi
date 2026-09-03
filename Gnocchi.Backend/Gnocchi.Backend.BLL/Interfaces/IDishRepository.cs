@@ -3,7 +3,7 @@ namespace Gnocchi.Backend.Bll.Interfaces;
 public interface IDishRepository
 {
     #region Create signatures
-    public Task AddAsync(Dish dish, CancellationToken ct = default);
+    public void Add(Dish dish);
     #endregion
     #region Read signatures
     public Task<IReadOnlyList<Dish>> GetAllAsync(CancellationToken ct = default);
@@ -19,6 +19,6 @@ public interface IDishRepository
     public Task<Dish?> UpdateNameAsync(string id, string newName, CancellationToken ct = default);
     #endregion
     #region Delete signatures
-    public Task DeleteAsync(string id, CancellationToken ct = default);
+    public void Remove(Dish dish);
     #endregion
 }
