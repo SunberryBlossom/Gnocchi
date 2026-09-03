@@ -1,62 +1,107 @@
 using Gnocchi.Backend.Bll.Interfaces;
 using Gnocchi.Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gnocchi.Backend.DAL.Repositories;
 
 public class DishRepository : IDishRepository
 {
-    public Task AddAsync(Dish dish, CancellationToken ct = default)
+    #region Fields
+    private readonly GnocchiDbContext _dbContext;
+    #endregion
+    #region Constructors
+    public DishRepository(GnocchiDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
     }
-
-    public Task DeleteAsync(string id, CancellationToken ct = default)
+    #endregion
+    #region Create methods
+    public void Add(Dish dish)
     {
-        throw new NotImplementedException();
+        _dbContext.Dishes.Add(dish);
     }
-
-    public Task<IReadOnlyList<Dish>> GetAllAsync(CancellationToken ct = default)
+    #endregion
+    #region Read methods
+    public async Task<IReadOnlyList<Dish>> GetAllAsync(CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Dishes.AsNoTracking().ToListAsync(ct);
     }
-
-    public Task<Dish?> GetAsync(string id, CancellationToken ct = default)
+    public async Task<Dish?> GetAsync(string id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Dishes.FindAsync(id, ct);
     }
-
-    public Task<Dish?> GetFullAsync(string id, CancellationToken ct = default)
+    public async Task<Dish?> GetFullAsync(string id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Dishes
+        .Where(dish => dish.DishId == id)
+        .Include(dish => dish.Variant)
+        .Include(dish => dish.Score)
+        .Include(dish => dish.RecipeSteps)
+        .AsNoTracking()
+        .AsSplitQuery()
+        .FirstOrDefaultAsync(ct);
     }
-
-    public Task<Dish?> GetwithRecipeStepsAsync(string id, CancellationToken ct = default)
+    public async Task<Dish?> GetwithRecipeStepsAsync(string id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Dishes
+        .Where(dish => dish.DishId == id)
+        .Include(dish => dish.RecipeSteps)
+        .AsNoTracking()
+        .FirstOrDefaultAsync(ct);
     }
-
-    public Task<Dish?> GetWithScoreAsync(string id, CancellationToken ct = default)
+    public async Task<Dish?> GetWithScoreAsync(string id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Dishes
+        .Where(dish => dish.DishId == id)
+        .Include(dish => dish.Score)
+        .AsNoTracking()
+        .FirstOrDefaultAsync(ct);
     }
-
-    public Task<Dish?> GetWithVariantAsync(string id, CancellationToken ct = default)
+    public async Task<Dish?> GetWithVariantAsync(string id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Dishes
+       .Where(dish => dish.DishId == id)
+       .Include(dish => dish.Variant)
+       .AsNoTracking()
+       .FirstOrDefaultAsync(ct);
     }
-
-    public Task<Dish?> UpdateNameAsync(string id, string newName, CancellationToken ct = default)
+    #endregion
+    #region Update methods
+    public async Task<Dish?> UpdateNameAsync(string id, string newName, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var dish = await _dbContext.Dishes.FindAsync(id, ct);
+        if (dish is null)
+        {
+            return null;
+        }
+        dish.Name = newName;
+        return dish;
     }
-
-    public Task<Dish?> UpdateScoreAsync(string dishId, string newScoreId, CancellationToken ct = default)
+    public async Task<Dish?> UpdateScoreAsync(string dishId, string newScoreId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var dish = await _dbContext.Dishes.FindAsync(dishId, ct);
+        if (dish is null)
+        {
+            return null;
+        }
+        dish.ScoreId = newScoreId;
+        return dish;
     }
-
-    public Task<Dish?> UpdateVariantAsync(string dishId, string newVariantId, CancellationToken ct = default)
+    public async Task<Dish?> UpdateVariantAsync(string dishId, string newVariantId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var dish = await _dbContext.Dishes.FindAsync(dishId, ct);
+        if (dish is null)
+        {
+            return null;
+        }
+        dish.VariantId = newVariantId;
+        return dish;
     }
+    #endregion
+    #region Delete methods
+    public void Remove(Dish dish)
+    {
+        _dbContext.Dishes.Remove(dish);
+    }
+    #endregion
 }
