@@ -8,6 +8,7 @@
     <Using Include="Gnocchi.Backend.Models" />
   </ItemGroup>
   <ItemGroup Label="Project references">
+    <ProjectReference Include="..\Gnocchi.Backend.App\Gnocchi.Backend.App.csproj" />
     <ProjectReference Include="..\Gnocchi.Backend.Models\Gnocchi.Backend.Models.csproj" />
     <ProjectReference Include="..\Gnocchi.Backend.Shared\Gnocchi.Backend.Shared.csproj" />
   </ItemGroup>
