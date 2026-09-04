@@ -1,4 +1,4 @@
-using Gnocchi.Backend.App.Services;
+using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.BLL.Interfaces;
 namespace Gnocchi.Backend.BLL.Managers;
 
@@ -26,6 +26,10 @@ public class DishManager : IDishManager
     public async Task<Dish?> GetByIdAsync(string id, CancellationToken ct = default)
     {
         return await _dishRepository.GetAsync(id, ct);
+    }
+    public async Task<IReadOnlyList<Dish>> GetAllAsync(CancellationToken ct = default)
+    {
+        return await _dishRepository.GetAllAsync(ct);
     }
     public async Task<Dish?> GetCompleteByIdAsync(string id, CancellationToken ct = default)
     {
