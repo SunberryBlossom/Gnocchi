@@ -1,4 +1,6 @@
+using Gnocchi.Backend.App.Services;
 using Gnocchi.Backend.BLL.Interfaces;
+using Gnocchi.Backend.BLL.Managers;
 using Gnocchi.Backend.DAL;
 using Gnocchi.Backend.DAL.Repositories;
 using Gnocchi.Backend.Models;
@@ -14,11 +16,12 @@ public class Program
         #region Service container configuration
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddDbContext<GnocchiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddIdentityApiEndpoints<User>(options => options.User.RequireUniqueEmail = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<GnocchiDbContext>();
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
         builder.Services.AddAuthorization();
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        #region Repositories
         builder.Services.AddScoped<IDishRepository, DishRepository>();
         builder.Services.AddScoped<ICookingMethodRepository, CookingMethodRepository>();
         builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
@@ -27,6 +30,10 @@ public class Program
         builder.Services.AddScoped<IRecipeStepRepository, RecipeStepRepository>();
         builder.Services.AddScoped<IResultRepository, ResultRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        #endregion
+        #region Managers
+        builder.Services.AddScoped<IDishManager, DishManager>();
+        #endregion
         #endregion
         #region Middleware configuration
         var app = builder.Build();
