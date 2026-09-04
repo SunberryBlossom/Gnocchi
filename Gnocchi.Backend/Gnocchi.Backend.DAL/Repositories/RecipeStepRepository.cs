@@ -2,6 +2,7 @@ namespace Gnocchi.Backend.DAL.Repositories;
 
 public class RecipeStepRepository : IRecipeStepRepository
 {
+    // TODO! Check if junction tables need manager classes
     #region Fields
     private readonly GnocchiDbContext _dbContext;
     #endregion
