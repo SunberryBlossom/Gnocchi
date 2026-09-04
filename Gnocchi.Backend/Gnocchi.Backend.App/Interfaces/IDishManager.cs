@@ -1,5 +1,5 @@
 using Gnocchi.Backend.Models;
-namespace Gnocchi.Backend.App.Services;
+namespace Gnocchi.Backend.App.Interfaces;
 
 public interface IDishManager
 {
@@ -9,6 +9,7 @@ public interface IDishManager
     #region Read signatures
     public Task<Dish?> GetByIdAsync(string id, CancellationToken ct = default);
     public Task<Dish?> GetCompleteByIdAsync(string id, CancellationToken ct = default);
+    public Task<IReadOnlyList<Dish>> GetAllAsync(CancellationToken ct = default);
     public Task<Dish?> GetWithSpecificEntityAsync(string id, string entity, CancellationToken ct = default);
     #endregion
     #region Update signatures
