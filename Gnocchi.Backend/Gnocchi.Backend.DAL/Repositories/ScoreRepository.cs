@@ -37,7 +37,7 @@ public class ScoreRepository : IScoreRepository
         .AsSplitQuery()
         .FirstOrDefaultAsync(ct);
     }
-    public async Task<Score?> GetWithCookingMethodAsync(string id, CancellationToken ct = default)
+    public async Task<Score?> GetWithCookingMethodsAsync(string id, CancellationToken ct = default)
     {
         return await _dbContext.Scores
         .Where(score => score.ScoreId == id)
