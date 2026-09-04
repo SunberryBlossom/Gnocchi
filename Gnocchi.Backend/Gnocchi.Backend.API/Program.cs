@@ -1,4 +1,4 @@
-using Gnocchi.Backend.App.Services;
+using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.BLL.Interfaces;
 using Gnocchi.Backend.BLL.Managers;
 using Gnocchi.Backend.DAL;
@@ -33,6 +33,11 @@ public class Program
         #endregion
         #region Managers
         builder.Services.AddScoped<IDishManager, DishManager>();
+        builder.Services.AddScoped<ICookingMethodManager, CookingMethodManager>();
+        builder.Services.AddScoped<IIngredientManager, IngredientManager>();
+        builder.Services.AddScoped<IResultManager, ResultManager>();
+        builder.Services.AddScoped<IScoreManager, ScoreManager>();
+        builder.Services.AddScoped<IUserManager, UserManager>();
         #endregion
         #endregion
         #region Middleware configuration
