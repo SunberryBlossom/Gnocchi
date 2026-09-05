@@ -37,6 +37,7 @@ public class Program
         builder.Services.AddScoped<IResultManager, ResultManager>();
         builder.Services.AddScoped<IScoreManager, ScoreManager>();
         builder.Services.AddScoped<IUserManager, UserManager>();
+        builder.Services.AddScoped<IVariantManager, VariantManager>();
         #endregion
         #endregion
         #region Middleware configuration
