@@ -6,13 +6,11 @@ namespace Gnocchi.Backend.BLL.Managers;
 public class ResultManager : IResultManager
 {
     #region Fields
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IResultRepository _resultRepository;
     #endregion
     #region Constructors
-    public ResultManager(IResultRepository resultRepository, IUnitOfWork unitOfWork)
+    public ResultManager(IResultRepository resultRepository)
     {
-        _unitOfWork = unitOfWork;
         _resultRepository = resultRepository;
     }
     #endregion
@@ -20,7 +18,6 @@ public class ResultManager : IResultManager
     public async Task AddAsync(Result result, CancellationToken ct = default)
     {
         _resultRepository.Add(result);
-        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
     #region Read methods
@@ -51,7 +48,6 @@ public class ResultManager : IResultManager
     public async Task<Result?> UpdateCommentAsync(string id, string newValue, CancellationToken ct = default)
     {
         var result = await _resultRepository.UpdateCommentAsync(id, newValue, ct);
-        await _unitOfWork.SaveChangesAsync();
         return result;
     }
     #endregion
@@ -59,7 +55,6 @@ public class ResultManager : IResultManager
     public async Task RemoveAsync(Result result, CancellationToken ct = default)
     {
         _resultRepository.Remove(result);
-        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
 }

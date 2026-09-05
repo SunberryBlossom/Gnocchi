@@ -6,13 +6,11 @@ namespace Gnocchi.Backend.BLL.Managers;
 public class CookingMethodManager : ICookingMethodManager
 {
     #region Fields
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ICookingMethodRepository _cookingMethodRepository;
     #endregion
     #region Constructors
-    public CookingMethodManager(ICookingMethodRepository cookingMethodRepository, IUnitOfWork unitOfWork)
+    public CookingMethodManager(ICookingMethodRepository cookingMethodRepository)
     {
-        _unitOfWork = unitOfWork;
         _cookingMethodRepository = cookingMethodRepository;
     }
     #endregion
@@ -20,7 +18,6 @@ public class CookingMethodManager : ICookingMethodManager
     public async Task AddAsync(CookingMethod cookingMethod, CancellationToken ct = default)
     {
         _cookingMethodRepository.Add(cookingMethod);
-        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
     #region Read methods
@@ -50,7 +47,6 @@ public class CookingMethodManager : ICookingMethodManager
     public async Task<CookingMethod?> UpdateScoreAsync(string id, string newValue, CancellationToken ct = default)
     {
         var result = await _cookingMethodRepository.UpdateScoreAsync(id, newValue, ct);
-        await _unitOfWork.SaveChangesAsync();
         return result;
     }
     #endregion
@@ -58,7 +54,6 @@ public class CookingMethodManager : ICookingMethodManager
     public async Task RemoveAsync(CookingMethod cookingMethod, CancellationToken ct = default)
     {
         _cookingMethodRepository.Remove(cookingMethod);
-        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
 }

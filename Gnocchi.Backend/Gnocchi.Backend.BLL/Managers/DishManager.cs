@@ -6,20 +6,17 @@ public class DishManager : IDishManager
 {
     #region Fields
     private readonly IDishRepository _dishRepository;
-    private readonly IUnitOfWork _unitOfWork;
     #endregion
     #region Constructors
-    public DishManager(IDishRepository dishRepository, IUnitOfWork unitOfWork)
+    public DishManager(IDishRepository dishRepository)
     {
         _dishRepository = dishRepository;
-        _unitOfWork = unitOfWork;
     }
     #endregion
     #region Create methods
     public async Task AddAsync(Dish dish, CancellationToken ct = default)
     {
         _dishRepository.Add(dish);
-        await _unitOfWork.SaveChangesAsync();
     }
     #endregion
     #region Read methods
@@ -49,22 +46,19 @@ public class DishManager : IDishManager
     #region Update methods
     public async Task<Dish?> UpdateAsync(string id, string attribute, string newValue, CancellationToken ct = default)
     {
-        var result = attribute switch
+        return attribute switch
         {
             "name" => await _dishRepository.UpdateNameAsync(id, newValue, ct),
             "variant" => await _dishRepository.UpdateVariantAsync(id, newValue, ct),
             "score" => await _dishRepository.UpdateScoreAsync(id, newValue, ct),
             _ => null
         };
-        await _unitOfWork.SaveChangesAsync();
-        return result;
     }
     #endregion
     #region Delete methods
     public async Task RemoveAsync(Dish dish)
     {
         _dishRepository.Remove(dish);
-        await _unitOfWork.SaveChangesAsync();
     }
     #endregion
 }

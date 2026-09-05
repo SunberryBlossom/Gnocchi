@@ -16,7 +16,6 @@ public class Program
         #region Service container configuration
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddDbContext<GnocchiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddIdentityApiEndpoints<User>(options => options.User.RequireUniqueEmail = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<GnocchiDbContext>();
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
