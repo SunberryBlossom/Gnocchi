@@ -57,9 +57,16 @@ public class DishService : IDishService
         }).ToList();
     }
 
-    public Task<DishDTO> GetDishByIdAsync(string id, CancellationToken ct = default)
+    public async Task<DishDTO> GetDishByIdAsync(string id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        Dish? dish = await _dishManager.GetByIdAsync(id, ct);
+        return new DishDTO
+        {
+            DishId = dish.DishId,
+            Name = dish.Name,
+            Score = dish.Score,
+            RecipeSteps = dish.RecipeSteps.ToList()
+        };
     }
 
     public Task<DishDTO> GetFullDishAsync(string id, CancellationToken ct = default)
