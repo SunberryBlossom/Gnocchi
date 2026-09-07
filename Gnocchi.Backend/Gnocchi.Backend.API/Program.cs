@@ -1,4 +1,6 @@
+using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.Interfaces;
+using Gnocchi.Backend.App.Services;
 using Gnocchi.Backend.BLL.Interfaces;
 using Gnocchi.Backend.BLL.Managers;
 using Gnocchi.Backend.DAL;
@@ -39,6 +41,9 @@ public class Program
         builder.Services.AddScoped<IUserManager, UserManager>();
         builder.Services.AddScoped<IVariantManager, VariantManager>();
         #endregion
+        #endregion
+        #region Services
+        builder.Services.AddScoped<IDishService, DishService>();
         #endregion
         #region Middleware configuration
         var app = builder.Build();
