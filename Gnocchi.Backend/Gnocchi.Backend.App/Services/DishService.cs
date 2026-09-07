@@ -22,16 +22,16 @@ public class DishService : IDishService
             RecipeSteps = createDishDTO.RecipeSteps
         };
 
-       await _dishManager.AddAsync(dish, ct);
+        await _dishManager.AddAsync(dish, ct);
 
-       return new DishDTO
-       {
-         DishId = dish.DishId!,
-         Name = dish.Name,
-         Variant = dish.Variant,
-         Score = dish.Score,
-         RecipeSteps = dish.RecipeSteps.ToList()
-       };
+        return new DishDTO
+        {
+            DishId = dish.DishId!,
+            Name = dish.Name,
+            Variant = dish.Variant,
+            Score = dish.Score,
+            RecipeSteps = dish.RecipeSteps.ToList()
+        };
     }
 
     public Task DeleteDishAsync(DeleteDishDTO deleteDishDTO, CancellationToken ct = default)
