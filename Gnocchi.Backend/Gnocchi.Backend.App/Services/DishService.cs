@@ -69,12 +69,25 @@ public class DishService : IDishService
         };
     }
 
-    public Task<DishDTO> GetFullDishAsync(string id, CancellationToken ct = default)
-    {
-        throw new NotImplementedException();
-    }
 
-    public Task<DishDTO> UpdateDishAsync(UpdateDishDTO updateDishDTO, CancellationToken ct = default)
+    public async Task<DishDTO> UpdateDishAsync(UpdateDishDTO updateDishDTO, CancellationToken ct = default)
+    {
+        var dish = await _dishManager.UpdateAsync(
+            updateDishDTO.Id,
+            updateDishDTO.Attribute,
+            updateDishDTO.NewValue, ct
+        );
+
+        return new DishDTO
+        {
+            DishId = dish.DishId,
+            Name = dish.Name,
+            Variant = dish.Variant,
+            Score = dish.Score,
+            RecipeSteps = dish.RecipeSteps.ToList()
+        };
+    }
+    public Task<DishDTO> GetFullDishAsync(string id, CancellationToken ct = default)
     {
         throw new NotImplementedException();
     }
