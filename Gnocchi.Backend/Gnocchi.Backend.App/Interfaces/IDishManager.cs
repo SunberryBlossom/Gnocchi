@@ -16,7 +16,7 @@ public interface IDishManager
     public Task<Dish?> UpdateAsync(string id, string attribute, string newValue, CancellationToken ct = default);
     #endregion
     #region Delete signatures
-    public Task RemoveAsync(Dish dish);
+    public Task RemoveAsync(Dish dish, CancellationToken ct = default);
     #endregion
 
 }
