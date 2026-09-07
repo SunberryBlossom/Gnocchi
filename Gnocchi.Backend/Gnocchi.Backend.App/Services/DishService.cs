@@ -8,17 +8,32 @@ namespace Gnocchi.Backend.App.Services;
 public class DishService : IDishService
 {
     private readonly IDishManager _dishManager;
-    public DishService(IDishManager dishManager)
+    private readonly IScoreManager _scoreManager;
+    private readonly IVariantManager _variantManager;
+    public DishService(IDishManager dishManager, IScoreManager scoreManager, IVariantManager variantManager)
     {
         _dishManager = dishManager;
+        _scoreManager = scoreManager;
+        _variantManager = variantManager;
     }
     public async Task<DishDTO> AddDishAsync(CreateDishDTO createDishDTO, CancellationToken ct = default)
     {
+        var score = await _scoreManager.GetByIdAsync(createDishDTO.ScoreId, ct);
+        var variant = await _variantManager.GetByIdAsync(createDishDTO.VariantId, ct);
+
+        if (score is null || variant is null) // TODO: suboptimal, will iterate over one day.
+        {
+            throw new NullReferenceException(message: $"You have tried to enter a non existing score or variant!");
+        }
+
         Dish dish = new()
         {
+            DishId = Guid.NewGuid().ToString(),
             Name = createDishDTO.Name,
-            Variant = createDishDTO.Variant,
-            Score = createDishDTO.Score,
+            VariantId = variant.VariantId,
+            Variant = variant,
+            ScoreId = score.ScoreId,
+            Score = score,
             RecipeSteps = createDishDTO.RecipeSteps
         };
 
@@ -26,66 +41,29 @@ public class DishService : IDishService
 
         return new DishDTO
         {
-            DishId = dish.DishId!,
+            DishId = dish.DishId,
             Name = dish.Name,
-            Variant = dish.Variant,
-            Score = dish.Score,
+            VariantId = dish.VariantId,
+            ScoreId = dish.ScoreId,
             RecipeSteps = dish.RecipeSteps.ToList()
         };
     }
 
     public async Task DeleteDishAsync(DeleteDishDTO deleteDishDTO, CancellationToken ct = default)
     {
-        var dishTobeDeleted = await _dishManager.GetByIdAsync(deleteDishDTO.DishId, ct);
-
-        if (dishTobeDeleted is not null)
-        {
-            await _dishManager.RemoveAsync(dishTobeDeleted, ct);
-        }
     }
 
     public async Task<IReadOnlyList<DishDTO>> GetAllDishesAsync(CancellationToken ct = default)
     {
-        var result = await _dishManager.GetAllAsync(ct);
-        return result.Select(dish => new DishDTO
-        {
-            DishId = dish.DishId,
-            Name = dish.Name,
-            Variant = dish.Variant,
-            Score = dish.Score,
-            RecipeSteps = dish.RecipeSteps.ToList()
-        }).ToList();
     }
 
     public async Task<DishDTO> GetDishByIdAsync(string id, CancellationToken ct = default)
     {
-        Dish? dish = await _dishManager.GetByIdAsync(id, ct);
-        return new DishDTO
-        {
-            DishId = dish.DishId,
-            Name = dish.Name,
-            Score = dish.Score,
-            RecipeSteps = dish.RecipeSteps.ToList()
-        };
     }
 
 
     public async Task<DishDTO> UpdateDishAsync(UpdateDishDTO updateDishDTO, CancellationToken ct = default)
     {
-        var dish = await _dishManager.UpdateAsync(
-            updateDishDTO.Id,
-            updateDishDTO.Attribute,
-            updateDishDTO.NewValue, ct
-        );
-
-        return new DishDTO
-        {
-            DishId = dish.DishId,
-            Name = dish.Name,
-            Variant = dish.Variant,
-            Score = dish.Score,
-            RecipeSteps = dish.RecipeSteps.ToList()
-        };
     }
     public Task<DishDTO> GetFullDishAsync(string id, CancellationToken ct = default)
     {
