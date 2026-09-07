@@ -34,9 +34,14 @@ public class DishService : IDishService
         };
     }
 
-    public Task DeleteDishAsync(DeleteDishDTO deleteDishDTO, CancellationToken ct = default)
+    public async Task DeleteDishAsync(DeleteDishDTO deleteDishDTO, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var dishTobeDeleted = await _dishManager.GetByIdAsync(deleteDishDTO.DishId, ct);
+
+        if (dishTobeDeleted is not null)
+        {
+            await _dishManager.RemoveAsync(dishTobeDeleted, ct);
+        }
     }
 
     public Task<IReadOnlyList<DishDTO>> GetAllDishesAsync(CancellationToken ct = default)
