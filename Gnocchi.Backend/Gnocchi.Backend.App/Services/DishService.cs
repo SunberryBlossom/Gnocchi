@@ -1,13 +1,37 @@
 using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
+using Gnocchi.Backend.App.Interfaces;
+using Gnocchi.Backend.Models;
 
 namespace Gnocchi.Backend.App.Services;
 
 public class DishService : IDishService
 {
-    public Task<DishDTO> AddDishAsync(CreateDishDTO createDishDTO, CancellationToken ct = default)
+    private readonly IDishManager _dishManager;
+    public DishService(IDishManager dishManager)
     {
-        throw new NotImplementedException();
+        _dishManager = dishManager;
+    }
+    public async Task<DishDTO> AddDishAsync(CreateDishDTO createDishDTO, CancellationToken ct = default)
+    {
+        Dish dish = new()
+        {
+            Name = createDishDTO.Name,
+            Variant = createDishDTO.Variant,
+            Score = createDishDTO.Score,
+            RecipeSteps = createDishDTO.RecipeSteps
+        };
+
+       await _dishManager.AddAsync(dish, ct);
+
+       return new DishDTO
+       {
+         DishId = dish.DishId!,
+         Name = dish.Name,
+         Variant = dish.Variant,
+         Score = dish.Score,
+         RecipeSteps = dish.RecipeSteps.ToList()
+       };
     }
 
     public Task DeleteDishAsync(DeleteDishDTO deleteDishDTO, CancellationToken ct = default)
