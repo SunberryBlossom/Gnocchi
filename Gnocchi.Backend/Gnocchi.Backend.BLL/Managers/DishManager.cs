@@ -56,7 +56,7 @@ public class DishManager : IDishManager
     }
     #endregion
     #region Delete methods
-    public async Task RemoveAsync(Dish dish)
+    public async Task RemoveAsync(Dish dish, CancellationToken ct = default)
     {
         _dishRepository.Remove(dish);
     }
