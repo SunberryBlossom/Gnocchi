@@ -23,7 +23,7 @@ public class DishService : IDishService
 
         if (score is null || variant is null) // TODO: suboptimal, will iterate over one day.
         {
-            throw new NullReferenceException(message: $"You have tried to enter a non existing score or variant!");
+            throw new NullReferenceException(message: $"You have tried to enter a non existing score or variant into a dish!");
         }
 
         Dish dish = new()
@@ -51,20 +51,84 @@ public class DishService : IDishService
 
     public async Task DeleteDishAsync(DeleteDishDTO deleteDishDTO, CancellationToken ct = default)
     {
+        var dishToBeDeleted = await _dishManager.GetByIdAsync(deleteDishDTO.DishId, ct);
+
+        if (dishToBeDeleted is null)
+        {
+            throw new NullReferenceException(message: "Cannot delete a non existing dish!");
+        }
+
+        await _dishManager.RemoveAsync(dishToBeDeleted, ct);
     }
 
     public async Task<IReadOnlyList<DishDTO>> GetAllDishesAsync(CancellationToken ct = default)
     {
+        var dishes = await _dishManager.GetAllAsync(ct);
+
+        if (!dishes.Any())
+        {
+            return new List<DishDTO>();
+        }
+
+        return dishes.Select(dish => new DishDTO
+        {
+            DishId = dish.DishId,
+            Name = dish.Name,
+            VariantId = dish.VariantId,
+            ScoreId = dish.ScoreId,
+            RecipeSteps = dish.RecipeSteps.ToList()
+        }).ToList();
+
+
     }
 
     public async Task<DishDTO> GetDishByIdAsync(string id, CancellationToken ct = default)
     {
+        var dish = await _dishManager.GetByIdAsync(id, ct);
+
+        if (dish is null)
+        {
+            throw new NullReferenceException(message: "this ID is not connected to any dish!");
+        }
+
+        return new DishDTO
+        {
+            DishId = dish.DishId,
+            Name = dish.Name,
+            VariantId = dish.VariantId,
+            ScoreId = dish.ScoreId,
+            RecipeSteps = dish.RecipeSteps.ToList()
+        };
     }
 
 
     public async Task<DishDTO> UpdateDishAsync(UpdateDishDTO updateDishDTO, CancellationToken ct = default)
     {
+        var dish = await _dishManager.GetByIdAsync(updateDishDTO.DishId, ct);
+
+        if (dish is null)
+        {
+            throw new NullReferenceException(message: "this ID is not connected to any dish!");
+        }
+
+        await _dishManager.UpdateAsync(
+            updateDishDTO.DishId,
+            updateDishDTO.Attribute,
+            updateDishDTO.NewValue,
+            ct
+        );
+
+        return new DishDTO
+        {
+            DishId = dish.DishId,
+            Name = dish.Name,
+            VariantId = dish.VariantId,
+            ScoreId = dish.ScoreId,
+            RecipeSteps = dish.RecipeSteps.ToList()
+        };
     }
+
+    // TODO: try and find a case where this service method would actually be necessary... rn I think it is redundant.
     public Task<DishDTO> GetFullDishAsync(string id, CancellationToken ct = default)
     {
         throw new NotImplementedException();
