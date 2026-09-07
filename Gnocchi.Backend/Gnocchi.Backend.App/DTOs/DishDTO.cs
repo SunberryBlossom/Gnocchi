@@ -8,5 +8,5 @@ public record DishDTO
     public string Name { get; set; } = string.Empty;
     public Variant? Variant { get; set; }
     public Score? Score { get; set; }
-    public IReadOnlyCollection<RecipeStep>? RecipeSteps { get; set; }
+    public IReadOnlyList<RecipeStep>? RecipeSteps { get; set; }
 }
