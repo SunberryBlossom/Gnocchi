@@ -45,6 +45,7 @@ public class Program
         #region Services
         builder.Services.AddScoped<IDishService, DishService>();
         builder.Services.AddScoped<IVariantService, VariantService>();
+        builder.Services.AddScoped<IScoreService, ScoreService>();
         #endregion
         #region Middleware configuration
         var app = builder.Build();
