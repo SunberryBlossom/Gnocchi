@@ -57,7 +57,14 @@ public class ResultService : IResultService
 
     public async Task DeleteResultAsync(DeleteResultDTO deleteResultDTO, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var resultToBeDeleted = await _resultManager.GetByIdAsync(deleteResultDTO.ResultId, ct);
+
+        if (resultToBeDeleted is null)
+        {
+            throw new NullReferenceException(message: "This Result does not exist!");
+        }
+
+        await _resultManager.RemoveAsync(resultToBeDeleted, ct);
     }
 
     public async Task<IReadOnlyList<ResultDTO>> GetAllResultsAsync(CancellationToken ct = default)
