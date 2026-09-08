@@ -2,6 +2,7 @@ using Gnocchi.Backend.Shared.Enums;
 
 namespace Gnocchi.Backend.Models;
 
+[Index(nameof(Type))]
 public class Variant
 {
     #region Properties

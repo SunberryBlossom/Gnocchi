@@ -1,5 +1,6 @@
 namespace Gnocchi.Backend.Models;
 
+[Index(nameof(EdibleRaw))]
 public class Ingredient
 {
     #region Properties

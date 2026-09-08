@@ -1,6 +1,7 @@
 using Gnocchi.Backend.Shared.Enums;
 namespace Gnocchi.Backend.Models;
 
+[Index(nameof(Rating))]
 public class Score
 {
     #region Properties

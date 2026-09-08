@@ -1,5 +1,6 @@
 namespace Gnocchi.Backend.Models;
 
+[Index(nameof(Name), IsUnique = true)]
 public class Dish
 {
     #region Properties

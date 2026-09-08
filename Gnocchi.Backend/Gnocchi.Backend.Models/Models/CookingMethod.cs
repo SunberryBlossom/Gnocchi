@@ -2,6 +2,7 @@ using Gnocchi.Backend.Shared.Enums;
 
 namespace Gnocchi.Backend.Models;
 
+[Index(nameof(Method))]
 public class CookingMethod
 {
     #region Properties
