@@ -55,9 +55,23 @@ public class CookingMethodService : ICookingMethodService
         await _cookingMethodManager.RemoveAsync(cookingMethodToBeDeleted, ct);
     }
 
-    public Task<IReadOnlyList<CookingMethodDTO>> GetAllCookingMethodsAsync(CancellationToken ct = default)
+    public async Task<IReadOnlyList<CookingMethodDTO>> GetAllCookingMethodsAsync(CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var cookingMethods = await _cookingMethodManager.GetAllAsync(ct);
+
+        if (!cookingMethods.Any())
+        {
+            return new List<CookingMethodDTO>();
+        }
+
+        return cookingMethods.Select(cookingMethod => new CookingMethodDTO
+        {
+            CookingMethodId = cookingMethod.CookingMethodId!,
+            Method = cookingMethod.Method,
+            ScoreId = cookingMethod.ScoreId ??= string.Empty,
+            Results = cookingMethod.Results ?? new List<Result>()
+
+        }).ToList();
     }
 
     public Task<CookingMethodDTO> GetCookingMethodByIdAsync(string id, CancellationToken ct = default)
