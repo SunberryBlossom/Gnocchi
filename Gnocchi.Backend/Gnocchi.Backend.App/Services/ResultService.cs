@@ -69,7 +69,21 @@ public class ResultService : IResultService
 
     public async Task<IReadOnlyList<ResultDTO>> GetAllResultsAsync(CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var results = await _resultManager.GetAllAsync(ct);
+
+        if (results is null)
+        {
+            return new List<ResultDTO>();
+        }
+
+        return results.Select(result => new ResultDTO
+        {
+            ResultId = result.ResultId!,
+            Comment = result.Comment ??= string.Empty,
+            IngredientId = result.IngredientId!,
+            CookingMethodId = result.CookingMethodId!,
+            RecipeSteps = result.RecipeSteps.ToList() ?? new List<RecipeStep>()
+        }).ToList();
     }
 
     public async Task<ResultDTO> GetResultByIdAsync(string id, CancellationToken ct = default)
