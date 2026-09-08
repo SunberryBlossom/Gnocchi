@@ -11,19 +11,16 @@ public class ResultService : IResultService
     private readonly IResultManager _resultManager;
     private readonly IIngredientManager _ingredientManager;
     private readonly ICookingMethodManager _cookingMethodManager;
-    private readonly IdentityDbContext _unitOfWork;
     public ResultService
     (
         IResultManager resultManager,
         IIngredientManager ingredientManager,
-        ICookingMethodManager cookingMethodManager,
-        IdentityDbContext unitOfWork
+        ICookingMethodManager cookingMethodManager
     )
     {
         _resultManager = resultManager;
         _ingredientManager = ingredientManager;
         _cookingMethodManager = cookingMethodManager;
-        _unitOfWork = unitOfWork;
     }
     public async Task<ResultDTO> AddResultAsync(CreateResultDTO createResultDTO, CancellationToken ct = default)
     {
@@ -47,7 +44,6 @@ public class ResultService : IResultService
         };
 
         await _resultManager.AddAsync(result, ct);
-        await _unitOfWork.SaveChangesAsync();
 
         return new ResultDTO
         {
@@ -69,7 +65,6 @@ public class ResultService : IResultService
         }
 
         await _resultManager.RemoveAsync(resultToBeDeleted, ct);
-        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<IReadOnlyList<ResultDTO>> GetAllResultsAsync(CancellationToken ct = default)
@@ -125,7 +120,6 @@ public class ResultService : IResultService
             ct
         );
 
-        await _unitOfWork.SaveChangesAsync();
 
         return new ResultDTO
         {

@@ -8,11 +8,9 @@ namespace Gnocchi.Backend.App.Services;
 public class ScoreService : IScoreService
 {
     private readonly IScoreManager _scoreManager;
-    private readonly IdentityDbContext _unitOfWork;
-    public ScoreService(IScoreManager scoreManager, IdentityDbContext unitOfWork)
+    public ScoreService(IScoreManager scoreManager)
     {
         _scoreManager = scoreManager;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task<ScoreDTO> AddScoreAsync(CreateScoreDTO createScoreDTO, CancellationToken ct = default)
@@ -27,7 +25,6 @@ public class ScoreService : IScoreService
         };
         
         await _scoreManager.AddAsync(score, ct);
-        await _unitOfWork.SaveChangesAsync();
 
         return new ScoreDTO
         {
@@ -49,7 +46,6 @@ public class ScoreService : IScoreService
         }
 
         await _scoreManager.RemoveAsync(score, ct);
-        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<IReadOnlyList<ScoreDTO>> GetAllScoresAsync(CancellationToken ct = default)
