@@ -26,8 +26,9 @@ public class CookingMethodsController : ControllerBase
         return Ok(cookingMethodDTOs);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<CookingMethodDTO>> GetById(Guid id)
+    [HttpGet]
+    [Route("{id:Guid}")]
+    public async Task<ActionResult<CookingMethodDTO>> GetById([FromRoute]Guid id)
     {
         var CookingMethodDTO = await _cookingMethodService.GetCookingMethodByIdAsync(id.ToString());
 
