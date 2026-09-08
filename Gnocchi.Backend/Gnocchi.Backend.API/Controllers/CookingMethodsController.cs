@@ -1,0 +1,41 @@
+using Gnocchi.Backend.API.Interfaces;
+using Gnocchi.Backend.App.DTOs;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Gnocchi.Backend.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class CookingMethodsController : ControllerBase
+{
+    private readonly ICookingMethodService _cookingMethodService;
+    public CookingMethodsController(ICookingMethodService cookingMethodService)
+    {
+        _cookingMethodService = cookingMethodService;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IReadOnlyList<CookingMethodDTO>>> Get()
+    {
+        var cookingMethodDTOs = await _cookingMethodService.GetAllCookingMethodsAsync();
+        if (!cookingMethodDTOs.Any())
+        {
+            return NotFound();
+        }
+
+        return Ok(cookingMethodDTOs);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CookingMethodDTO>> GetById(Guid id)
+    {
+        var CookingMethodDTO = await _cookingMethodService.GetCookingMethodByIdAsync(id.ToString());
+
+        if(CookingMethodDTO is null)
+        {
+            return NotFound();
+        }
+        
+        return Ok(CookingMethodDTO);
+    }
+}
