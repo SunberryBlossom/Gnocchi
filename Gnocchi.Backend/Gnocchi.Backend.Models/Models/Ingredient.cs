@@ -6,6 +6,7 @@ public class Ingredient
     #region Properties
     public string? IngredientId { get; init; }
     [Required]
+    [MaxLength(28)]
     public string? Name { get; set; }
     [Required]
     public bool EdibleRaw { get; set; }

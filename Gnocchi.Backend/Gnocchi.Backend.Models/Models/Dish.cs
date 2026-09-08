@@ -6,6 +6,7 @@ public class Dish
     #region Properties
     public string? DishId { get; init; }
     [Required]
+    [MaxLength(150)]
     public string? Name { get; set; }
     #endregion
     #region Navigation properties
