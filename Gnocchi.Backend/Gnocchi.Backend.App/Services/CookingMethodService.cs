@@ -1,6 +1,7 @@
 using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
+using Gnocchi.Backend.Models;
 
 namespace Gnocchi.Backend.App.Services;
 
@@ -13,9 +14,33 @@ public class CookingMethodService : ICookingMethodService
         _cookingMethodManager = cookingMethodManager;
         _scoreManager = scoreManager;
     }
-    public Task<CookingMethodDTO> AddCookingMethodAsync(CreateCookingMethodDTO createCookingMethodDTO, CancellationToken ct = default)
+    public async Task<CookingMethodDTO> AddCookingMethodAsync(CreateCookingMethodDTO createCookingMethodDTO, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var score = await _scoreManager.GetByIdAsync(createCookingMethodDTO.ScoreId, ct);
+
+        if (score is null)
+        {
+            throw new NullReferenceException(message: "The score is non existent!");
+        }
+
+        CookingMethod cookingMethod = new()
+        {
+            CookingMethodId = Guid.NewGuid().ToString(),
+            Method = createCookingMethodDTO.Method,
+            ScoreId = score.ScoreId,
+            Score = score,
+            Results = createCookingMethodDTO.Results
+        };
+
+        await _cookingMethodManager.AddAsync(cookingMethod, ct);
+
+        return new CookingMethodDTO
+        {
+            CookingMethodId = cookingMethod.CookingMethodId,
+            Method = cookingMethod.Method,
+            ScoreId = cookingMethod.ScoreId ??= string.Empty,
+            Results = cookingMethod.Results
+        };
     }
 
     public Task DeleteCookingMethodAsync(DeleteCookingMethodDTO deleteCookingMethodDTO, CancellationToken ct = default)
