@@ -8,6 +8,7 @@ using Gnocchi.Backend.DAL.Repositories;
 using Gnocchi.Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 namespace Gnocchi.Backend.API;
 
@@ -55,6 +56,7 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+            app.MapScalarApiReference();
         }
         app.UseHttpsRedirection();
         app.UseAuthentication();
