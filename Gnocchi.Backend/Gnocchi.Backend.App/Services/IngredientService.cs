@@ -59,9 +59,18 @@ public class IngredientService : IIngredientService
         await _ingredientManager.RemoveAsync(ingredientToBeDeleted, ct);
     }
 
-    public Task<IReadOnlyList<IngredientDTO>> GetAllIngredientsAsync(CancellationToken ct = default)
+    public async Task<IReadOnlyList<IngredientDTO>> GetAllIngredientsAsync(CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var ingredients = await _ingredientManager.GetAllAsync(ct);
+
+        return ingredients.Select(ingredient => new IngredientDTO
+        {
+            IngredientId = ingredient.IngredientId!,
+            Name = ingredient.Name ??= string.Empty,
+            EdibleRaw = ingredient.EdibleRaw,
+            ScoreId = ingredient.ScoreId ??= string.Empty,
+            Results = ingredient.Results
+        }).ToList();
     }
 
     public Task<IngredientDTO> GetIngredientByIdAsync(string id, CancellationToken ct = default)
