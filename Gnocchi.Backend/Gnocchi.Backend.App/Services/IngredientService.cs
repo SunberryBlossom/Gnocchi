@@ -47,9 +47,16 @@ public class IngredientService : IIngredientService
         };
     }
 
-    public Task DeleteIngredientAsync(DeleteIngredientDTO deleteIngredientDTO, CancellationToken ct = default)
+    public async Task DeleteIngredientAsync(DeleteIngredientDTO deleteIngredientDTO, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var ingredientToBeDeleted = await _ingredientManager.GetByIdAsync(deleteIngredientDTO.IngredientId, ct);
+
+        if (ingredientToBeDeleted is null)
+        {
+            throw new NullReferenceException(message: "this ID does not belong to any ingredient!");
+        }
+
+        await _ingredientManager.RemoveAsync(ingredientToBeDeleted, ct);
     }
 
     public Task<IReadOnlyList<IngredientDTO>> GetAllIngredientsAsync(CancellationToken ct = default)
