@@ -73,9 +73,23 @@ public class IngredientService : IIngredientService
         }).ToList();
     }
 
-    public Task<IngredientDTO> GetIngredientByIdAsync(string id, CancellationToken ct = default)
+    public async Task<IngredientDTO> GetIngredientByIdAsync(string id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var ingredient = await _ingredientManager.GetByIdAsync(id, ct);
+
+        if (ingredient is null)
+        {
+            throw new NullReferenceException(message: "This ingredient does not exist!");
+        }
+
+        return new IngredientDTO
+        {
+            IngredientId = ingredient.IngredientId!,
+            Name = ingredient.Name ??= string.Empty,
+            EdibleRaw = ingredient.EdibleRaw,
+            ScoreId = ingredient.ScoreId ??= string.Empty,
+            Results = ingredient.Results
+        };
     }
 
     public Task<IngredientDTO> UpdateIngredientAsync(UpdateIngredientDTO updateIngredientDTO, CancellationToken ct = default)
