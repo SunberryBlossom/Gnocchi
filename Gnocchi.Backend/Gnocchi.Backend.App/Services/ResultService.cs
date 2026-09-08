@@ -106,6 +106,26 @@ public class ResultService : IResultService
 
     public async Task<ResultDTO> UpdateResultAsync(UpdateResultDTO updateResultDTO, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var result = await _resultManager.GetByIdAsync(updateResultDTO.ResultId, ct);
+
+        if (result is null)
+        {
+            throw new NullReferenceException(message: "this ID is not connected to any result!");
+        }
+
+        await _resultManager.UpdateCommentAsync(
+            updateResultDTO.ResultId,
+            updateResultDTO.NewValue,
+            ct
+        );
+
+        return new ResultDTO
+        {
+            ResultId = result.ResultId!,
+            Comment = result.Comment ??= string.Empty,
+            IngredientId = result.IngredientId!,
+            CookingMethodId = result.CookingMethodId!,
+            RecipeSteps = result.RecipeSteps.ToList() ?? new List<RecipeStep>()
+        };
     }
 }
