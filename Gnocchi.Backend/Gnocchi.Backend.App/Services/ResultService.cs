@@ -1,6 +1,8 @@
+using System.Runtime.CompilerServices;
 using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
+using Gnocchi.Backend.Models;
 
 namespace Gnocchi.Backend.App.Services;
 
@@ -20,27 +22,55 @@ public class ResultService : IResultService
         _ingredientManager = ingredientManager;
         _cookingMethodManager = cookingMethodManager;
     }
-    public Task<ResultDTO> AddResultAsync(CreateResultDTO createResultDTO, CancellationToken ct = default)
+    public async Task<ResultDTO> AddResultAsync(CreateResultDTO createResultDTO, CancellationToken ct = default)
+    {
+        var ingredient = await _ingredientManager.GetByIdAsync(createResultDTO.IngredientId, ct);
+        var cookingMethod = await _cookingMethodManager.GetByIdAsync(createResultDTO.CookingMethodId, ct);
+
+        if (ingredient is null || cookingMethod is null)
+        {
+            throw new NullReferenceException(message: "either the ingredient or cookingmethod is non existent!");
+        }
+
+        Result result = new()
+        {
+            ResultId = Guid.NewGuid().ToString(),
+            Comment = createResultDTO.Comment,
+            IngredientId = ingredient.IngredientId,
+            Ingredient = ingredient,
+            CookingMethodId = cookingMethod.CookingMethodId,
+            CookingMethod = cookingMethod,
+            RecipeSteps = createResultDTO.RecipeSteps
+        };
+
+        await _resultManager.AddAsync(result, ct);
+
+        return new ResultDTO
+        {
+            ResultId = result.ResultId,
+            Comment = result.Comment,
+            IngredientId = result.IngredientId ??= string.Empty,
+            CookingMethodId = result.CookingMethodId ??= string.Empty,
+            RecipeSteps = result.RecipeSteps.ToList()
+        };
+    }
+
+    public async Task DeleteResultAsync(DeleteResultDTO deleteResultDTO, CancellationToken ct = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task DeleteResultAsync(DeleteResultDTO deleteResultDTO, CancellationToken ct = default)
+    public async Task<IReadOnlyList<ResultDTO>> GetAllResultsAsync(CancellationToken ct = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyList<ResultDTO>> GetAllResultsAsync(CancellationToken ct = default)
+    public async Task<ResultDTO> GetResultByIdAsync(string id, CancellationToken ct = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ResultDTO> GetResultByIdAsync(string id, CancellationToken ct = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ResultDTO> UpdateResultAsync(UpdateResultDTO updateResultDTO, CancellationToken ct = default)
+    public async Task<ResultDTO> UpdateResultAsync(UpdateResultDTO updateResultDTO, CancellationToken ct = default)
     {
         throw new NotImplementedException();
     }
