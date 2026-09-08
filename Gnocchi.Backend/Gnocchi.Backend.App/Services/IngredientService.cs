@@ -92,8 +92,29 @@ public class IngredientService : IIngredientService
         };
     }
 
-    public Task<IngredientDTO> UpdateIngredientAsync(UpdateIngredientDTO updateIngredientDTO, CancellationToken ct = default)
+    public async Task<IngredientDTO> UpdateIngredientAsync(UpdateIngredientDTO updateIngredientDTO, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var ingredient = await _ingredientManager.GetByIdAsync(updateIngredientDTO.IngredientId, ct);
+
+        if (ingredient is null)
+        {
+            throw new NullReferenceException(message: "this ID is not connected to any ingredient!");
+        }
+
+        await _ingredientManager.UpdateAsync(
+            updateIngredientDTO.IngredientId,
+            updateIngredientDTO.Attribute,
+            updateIngredientDTO.NewValue,
+            ct
+        );
+
+        return new IngredientDTO
+        {
+            IngredientId = ingredient.IngredientId!,
+            Name = ingredient.Name ??= string.Empty,
+            EdibleRaw = ingredient.EdibleRaw,
+            ScoreId = ingredient.ScoreId ??= string.Empty,
+            Results = ingredient.Results
+        };
     }
 }
