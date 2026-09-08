@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
@@ -88,7 +87,21 @@ public class ResultService : IResultService
 
     public async Task<ResultDTO> GetResultByIdAsync(string id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var result = await _resultManager.GetByIdAsync(id, ct);
+
+        if (result is null)
+        {
+            throw new NullReferenceException(message: "this ID is not connected to any result!");
+        }
+
+        return new ResultDTO
+        {
+            ResultId = result.ResultId!,
+            Comment = result.Comment ??= string.Empty,
+            IngredientId = result.IngredientId!,
+            CookingMethodId = result.CookingMethodId!,
+            RecipeSteps = result.RecipeSteps.ToList() ?? new List<RecipeStep>()
+        };
     }
 
     public async Task<ResultDTO> UpdateResultAsync(UpdateResultDTO updateResultDTO, CancellationToken ct = default)
