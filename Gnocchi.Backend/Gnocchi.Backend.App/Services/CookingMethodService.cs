@@ -92,8 +92,27 @@ public class CookingMethodService : ICookingMethodService
         };
     }
 
-    public Task<CookingMethodDTO> UpdateCookingMethodAsync(UpdateCookingMethodDTO updateCookingMethodDTO, CancellationToken ct = default)
+    public async Task<CookingMethodDTO> UpdateCookingMethodAsync(UpdateCookingMethodDTO updateCookingMethodDTO, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var cookingMethod = await _cookingMethodManager.GetByIdAsync(updateCookingMethodDTO.CookingMethodId, ct);
+
+        if (cookingMethod is null)
+        {
+            throw new NullReferenceException(message: "this ID is not connected to any cookingMethod!");
+        }
+
+        await _cookingMethodManager.UpdateScoreAsync(
+            updateCookingMethodDTO.CookingMethodId,
+            updateCookingMethodDTO.ScoreId,
+            ct
+        );
+
+        return new CookingMethodDTO
+        {
+            CookingMethodId = cookingMethod.CookingMethodId!,
+            Method = cookingMethod.Method,
+            ScoreId = cookingMethod.ScoreId ??= string.Empty,
+            Results = cookingMethod.Results ?? new List<Result>()
+        };
     }
 }
