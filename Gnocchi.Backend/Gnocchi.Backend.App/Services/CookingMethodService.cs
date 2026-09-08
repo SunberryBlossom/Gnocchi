@@ -43,9 +43,16 @@ public class CookingMethodService : ICookingMethodService
         };
     }
 
-    public Task DeleteCookingMethodAsync(DeleteCookingMethodDTO deleteCookingMethodDTO, CancellationToken ct = default)
+    public async Task DeleteCookingMethodAsync(DeleteCookingMethodDTO deleteCookingMethodDTO, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var cookingMethodToBeDeleted = await _cookingMethodManager.GetByIdAsync(deleteCookingMethodDTO.CookingMethodId, ct);
+
+        if (cookingMethodToBeDeleted is null)
+        {
+            throw new NullReferenceException(message: "this cooking method does not exist!");
+        }
+
+        await _cookingMethodManager.RemoveAsync(cookingMethodToBeDeleted, ct);
     }
 
     public Task<IReadOnlyList<CookingMethodDTO>> GetAllCookingMethodsAsync(CancellationToken ct = default)
