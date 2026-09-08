@@ -2,6 +2,7 @@ using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Gnocchi.Backend.App.Services;
 
@@ -10,11 +11,13 @@ public class DishService : IDishService
     private readonly IDishManager _dishManager;
     private readonly IScoreManager _scoreManager;
     private readonly IVariantManager _variantManager;
-    public DishService(IDishManager dishManager, IScoreManager scoreManager, IVariantManager variantManager)
+    private readonly IdentityDbContext _unitOfWork;
+    public DishService(IDishManager dishManager, IScoreManager scoreManager, IVariantManager variantManager, IdentityDbContext unitOfWork)
     {
         _dishManager = dishManager;
         _scoreManager = scoreManager;
         _variantManager = variantManager;
+        _unitOfWork = unitOfWork;
     }
     public async Task<DishDTO> AddDishAsync(CreateDishDTO createDishDTO, CancellationToken ct = default)
     {
@@ -38,6 +41,7 @@ public class DishService : IDishService
         };
 
         await _dishManager.AddAsync(dish, ct);
+        await _unitOfWork.SaveChangesAsync();
 
         return new DishDTO
         {
@@ -59,6 +63,7 @@ public class DishService : IDishService
         }
 
         await _dishManager.RemoveAsync(dishToBeDeleted, ct);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<IReadOnlyList<DishDTO>> GetAllDishesAsync(CancellationToken ct = default)
@@ -117,6 +122,8 @@ public class DishService : IDishService
             updateDishDTO.NewValue,
             ct
         );
+
+        await _unitOfWork.SaveChangesAsync();
 
         return new DishDTO
         {

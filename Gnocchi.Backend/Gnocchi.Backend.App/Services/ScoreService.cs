@@ -1,15 +1,18 @@
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Gnocchi.Backend.App.Services;
 
 public class ScoreService : IScoreService
 {
     private readonly IScoreManager _scoreManager;
-    public ScoreService(IScoreManager scoreManager)
+    private readonly IdentityDbContext _unitOfWork;
+    public ScoreService(IScoreManager scoreManager, IdentityDbContext unitOfWork)
     {
         _scoreManager = scoreManager;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ScoreDTO> AddScoreAsync(CreateScoreDTO createScoreDTO, CancellationToken ct = default)
@@ -24,6 +27,7 @@ public class ScoreService : IScoreService
         };
         
         await _scoreManager.AddAsync(score, ct);
+        await _unitOfWork.SaveChangesAsync();
 
         return new ScoreDTO
         {
@@ -45,6 +49,7 @@ public class ScoreService : IScoreService
         }
 
         await _scoreManager.RemoveAsync(score, ct);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<IReadOnlyList<ScoreDTO>> GetAllScoresAsync(CancellationToken ct = default)

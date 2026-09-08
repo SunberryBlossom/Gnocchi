@@ -2,15 +2,18 @@ using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Gnocchi.Backend.App.Services;
 
 public class VariantService : IVariantService
 {
+    private readonly IdentityDbContext _unitOfWork;
     private readonly IVariantManager _variantManager;
-    public VariantService(IVariantManager variantManager)
+    public VariantService(IVariantManager variantManager, IdentityDbContext unitOfWork)
     {
         _variantManager = variantManager;
+        _unitOfWork = unitOfWork;
     }
     public async Task<VariantDTO> AddVariantAsync(CreateVariantDTO createVariantDTO, CancellationToken ct = default)
     {
@@ -23,6 +26,7 @@ public class VariantService : IVariantService
         };
 
         _variantManager.Add(variant);
+        await _unitOfWork.SaveChangesAsync();
 
         return new VariantDTO
         {
@@ -42,6 +46,7 @@ public class VariantService : IVariantService
         }
 
         _variantManager.Remove(variant);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<IReadOnlyList<VariantDTO>> GetAllVariantsAsync(CancellationToken ct = default)

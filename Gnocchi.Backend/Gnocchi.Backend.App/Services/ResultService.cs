@@ -2,6 +2,7 @@ using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Gnocchi.Backend.App.Services;
 
@@ -10,16 +11,19 @@ public class ResultService : IResultService
     private readonly IResultManager _resultManager;
     private readonly IIngredientManager _ingredientManager;
     private readonly ICookingMethodManager _cookingMethodManager;
+    private readonly IdentityDbContext _unitOfWork;
     public ResultService
     (
         IResultManager resultManager,
         IIngredientManager ingredientManager,
-        ICookingMethodManager cookingMethodManager
+        ICookingMethodManager cookingMethodManager,
+        IdentityDbContext unitOfWork
     )
     {
         _resultManager = resultManager;
         _ingredientManager = ingredientManager;
         _cookingMethodManager = cookingMethodManager;
+        _unitOfWork = unitOfWork;
     }
     public async Task<ResultDTO> AddResultAsync(CreateResultDTO createResultDTO, CancellationToken ct = default)
     {
@@ -43,6 +47,7 @@ public class ResultService : IResultService
         };
 
         await _resultManager.AddAsync(result, ct);
+        await _unitOfWork.SaveChangesAsync();
 
         return new ResultDTO
         {
@@ -64,6 +69,7 @@ public class ResultService : IResultService
         }
 
         await _resultManager.RemoveAsync(resultToBeDeleted, ct);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<IReadOnlyList<ResultDTO>> GetAllResultsAsync(CancellationToken ct = default)
@@ -118,6 +124,8 @@ public class ResultService : IResultService
             updateResultDTO.NewValue,
             ct
         );
+
+        await _unitOfWork.SaveChangesAsync();
 
         return new ResultDTO
         {

@@ -2,17 +2,20 @@ using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Gnocchi.Backend.App.Services;
 
 public class CookingMethodService : ICookingMethodService
 {
+    private readonly IdentityDbContext _unitOfWork;
     private readonly ICookingMethodManager _cookingMethodManager;
     private readonly IScoreManager _scoreManager;
-    public CookingMethodService(ICookingMethodManager cookingMethodManager, IScoreManager scoreManager)
+    public CookingMethodService(ICookingMethodManager cookingMethodManager, IScoreManager scoreManager, IdentityDbContext unitOfWork)
     {
         _cookingMethodManager = cookingMethodManager;
         _scoreManager = scoreManager;
+        _unitOfWork = unitOfWork;
     }
     public async Task<CookingMethodDTO> AddCookingMethodAsync(CreateCookingMethodDTO createCookingMethodDTO, CancellationToken ct = default)
     {
@@ -33,6 +36,7 @@ public class CookingMethodService : ICookingMethodService
         };
 
         await _cookingMethodManager.AddAsync(cookingMethod, ct);
+        await _unitOfWork.SaveChangesAsync();
 
         return new CookingMethodDTO
         {
@@ -53,6 +57,7 @@ public class CookingMethodService : ICookingMethodService
         }
 
         await _cookingMethodManager.RemoveAsync(cookingMethodToBeDeleted, ct);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<IReadOnlyList<CookingMethodDTO>> GetAllCookingMethodsAsync(CancellationToken ct = default)
@@ -106,6 +111,8 @@ public class CookingMethodService : ICookingMethodService
             updateCookingMethodDTO.ScoreId,
             ct
         );
+
+        await _unitOfWork.SaveChangesAsync();
 
         return new CookingMethodDTO
         {

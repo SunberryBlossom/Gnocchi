@@ -2,6 +2,7 @@ using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Gnocchi.Backend.App.Services;
 
@@ -9,11 +10,18 @@ public class IngredientService : IIngredientService
 {
     private readonly IIngredientManager _ingredientManager;
     private readonly IScoreManager _scoreManager;
+    private readonly IdentityDbContext _unitOfWork;
 
-    public IngredientService(IIngredientManager ingredientManager, IScoreManager scoreManager)
+    public IngredientService
+    (
+        IIngredientManager ingredientManager,
+        IScoreManager scoreManager,
+        IdentityDbContext unitOfWork
+    )
     {
         _ingredientManager = ingredientManager;
         _scoreManager = scoreManager;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<IngredientDTO> AddIngredientAsync(CreateIngredientDTO createIngredientDTO, CancellationToken ct = default)
@@ -36,6 +44,7 @@ public class IngredientService : IIngredientService
         };
 
         await _ingredientManager.AddAsync(ingredient, ct);
+        await _unitOfWork.SaveChangesAsync();
 
         return new IngredientDTO
         {
@@ -57,6 +66,7 @@ public class IngredientService : IIngredientService
         }
 
         await _ingredientManager.RemoveAsync(ingredientToBeDeleted, ct);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<IReadOnlyList<IngredientDTO>> GetAllIngredientsAsync(CancellationToken ct = default)
@@ -107,6 +117,8 @@ public class IngredientService : IIngredientService
             updateIngredientDTO.NewValue,
             ct
         );
+         
+        await _unitOfWork.SaveChangesAsync();
 
         return new IngredientDTO
         {
