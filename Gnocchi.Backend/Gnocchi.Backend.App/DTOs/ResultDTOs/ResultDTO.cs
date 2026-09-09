@@ -8,5 +8,5 @@ public record ResultDTO
     public string Comment { get; set; } = string.Empty;
     public string IngredientId { get; set; } = string.Empty;
     public string CookingMethodId { get; set; } = string.Empty;
-    public IReadOnlyList<RecipeStep>? RecipeSteps { get; set; }
+    public IReadOnlyList<string>? RecipeStepIds { get; set; } = new List<string>();
 }

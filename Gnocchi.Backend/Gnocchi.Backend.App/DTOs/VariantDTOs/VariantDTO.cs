@@ -7,5 +7,5 @@ public record VariantDTO
 {
     public string VariantId { get; set; } = string.Empty;
     public TypeOfDish? Type { get; set; }
-    public IReadOnlyList<Dish> Dishes { get; set; } = new List<Dish>();
+    public IReadOnlyList<string> Dishes { get; set; } = new List<string>();
 }

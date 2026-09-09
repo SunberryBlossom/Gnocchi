@@ -7,6 +7,5 @@ public record CookingMethodDTO
 {
     public string CookingMethodId { get; set; } = string.Empty;
     public Method Method { get; set; }
-    public string ScoreId { get; set; } = string.Empty;
-    public ICollection<Result> Results { get; set; } = new List<Result>();
+    public ICollection<string> Results { get; set; } = new List<string>();
 }
