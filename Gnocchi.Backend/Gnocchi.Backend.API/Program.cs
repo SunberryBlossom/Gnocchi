@@ -19,7 +19,16 @@ public class Program
     {
         #region Service container configuration
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddDbContext<GnocchiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("ConnectionStrings:DefaultConnection must be configured through user secrets or the deployment environment.");
+        var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+
+        builder.Services.AddDbContext<GnocchiDbContext>(options => options.UseSqlServer(connectionString));
+        builder.Services.AddCors(options => options.AddPolicy("Frontend", policy =>
+            policy.WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()));
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<ICurrentUserAccessor, HttpCurrentUserAccessor>();
         builder.Services.AddScoped<IUnitOfWork>(services => services.GetRequiredService<GnocchiDbContext>());
@@ -86,6 +95,7 @@ public class Program
             app.MapScalarApiReference();
         }
         app.UseHttpsRedirection();
+        app.UseCors("Frontend");
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapIdentityApi<User>();
