@@ -20,7 +20,7 @@ public class ResultRepository : IResultRepository
     #region Read methods
     public async Task<IReadOnlyList<Result>> GetAllAsync(CancellationToken ct = default)
     {
-        return await _dbContext.Results.ToListAsync(ct);
+        return await _dbContext.Results.AsNoTracking().ToListAsync(ct);
     }
 
     public async Task<Result?> GetAsync(string id, CancellationToken ct = default)
