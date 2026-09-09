@@ -1,4 +1,3 @@
-using Gnocchi.Backend.Models;
 using Gnocchi.Backend.Shared.Enums;
 
 namespace Gnocchi.Backend.App.DTOs;

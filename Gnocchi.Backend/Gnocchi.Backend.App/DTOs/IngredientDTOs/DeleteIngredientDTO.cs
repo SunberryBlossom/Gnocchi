@@ -4,6 +4,6 @@ namespace Gnocchi.Backend.App.DTOs;
 
 public record DeleteIngredientDTO
 {
-    [Required]
+    [Required(ErrorMessage = "An ingredient ID is required.")]
     public string IngredientId { get; set; } = string.Empty;
 }

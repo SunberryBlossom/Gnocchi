@@ -6,17 +6,15 @@ public class Score
 {
     #region Properties
     public string? ScoreId { get; set; }
-    [Required]
     public Rating Rating { get; set; }
     #endregion
     #region Navigation properties
     [ForeignKey(nameof(User))]
      public string? UserId { get; set; }
-    [Required]
-    [DeleteBehavior(DeleteBehavior.Cascade)]
+    [Required(ErrorMessage = "A score must belong to a user."), DeleteBehavior(DeleteBehavior.Cascade)]
     public User? User { get; set; }
-    public ICollection<Dish>? Dishes { get; set; }
-    public ICollection<CookingMethod>? CookingMethods { get; set; }
-    public ICollection<Ingredient>? Ingredients { get; set; }
+    public ICollection<Dish> Dishes { get; set; } = new List<Dish>();
+    public ICollection<CookingMethod> CookingMethods { get; set; } = new List<CookingMethod>();
+    public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
     #endregion
 }

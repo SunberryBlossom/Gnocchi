@@ -4,6 +4,6 @@ namespace Gnocchi.Backend.App.DTOs;
 
 public record DeleteScoreDTO
 {
-    [Required]
+    [Required(ErrorMessage = "A score ID is required.")]
     public string Id {get; set;} = string.Empty;
 }

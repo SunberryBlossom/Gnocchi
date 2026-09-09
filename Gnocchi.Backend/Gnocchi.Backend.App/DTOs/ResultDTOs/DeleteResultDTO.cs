@@ -4,6 +4,6 @@ namespace Gnocchi.Backend.App.DTOs;
 
 public record DeleteResultDTO
 {
-    [Required]
+    [Required(ErrorMessage = "A result ID is required.")]
     public string ResultId { get; set; } = string.Empty;
 }

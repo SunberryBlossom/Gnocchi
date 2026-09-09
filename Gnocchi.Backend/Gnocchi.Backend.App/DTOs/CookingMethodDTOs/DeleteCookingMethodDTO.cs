@@ -4,6 +4,6 @@ namespace Gnocchi.Backend.App.DTOs;
 
 public record DeleteCookingMethodDTO
 {
-    [Required]
+    [Required(ErrorMessage = "A cooking method ID is required.")]
     public string CookingMethodId { get; set; } = string.Empty;
 }
