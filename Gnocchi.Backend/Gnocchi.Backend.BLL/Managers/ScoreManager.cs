@@ -7,17 +7,20 @@ public class ScoreManager : IScoreManager
 {
     #region Fields
     private readonly IScoreRepository _scoreRepository;
+    private readonly IUnitOfWork _unitOfWork;
     #endregion
     #region Constructors
-    public ScoreManager(IScoreRepository scoreRepository)
+    public ScoreManager(IScoreRepository scoreRepository, IUnitOfWork unitOfWork)
     {
         _scoreRepository = scoreRepository;
+        _unitOfWork = unitOfWork;
     }
     #endregion
     #region Create methods
     public async Task AddAsync(Score score, CancellationToken ct = default)
     {
         _scoreRepository.Add(score);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
     #region Read methods
@@ -53,6 +56,7 @@ public class ScoreManager : IScoreManager
     public async Task RemoveAsync(Score score, CancellationToken ct = default)
     {
         _scoreRepository.Remove(score);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
 }

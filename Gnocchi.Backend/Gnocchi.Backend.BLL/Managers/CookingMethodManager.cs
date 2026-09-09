@@ -7,17 +7,20 @@ public class CookingMethodManager : ICookingMethodManager
 {
     #region Fields
     private readonly ICookingMethodRepository _cookingMethodRepository;
+    private readonly IUnitOfWork _unitOfWork;
     #endregion
     #region Constructors
-    public CookingMethodManager(ICookingMethodRepository cookingMethodRepository)
+    public CookingMethodManager(ICookingMethodRepository cookingMethodRepository, IUnitOfWork unitOfWork)
     {
         _cookingMethodRepository = cookingMethodRepository;
+        _unitOfWork = unitOfWork;
     }
     #endregion
     #region Create methods
     public async Task AddAsync(CookingMethod cookingMethod, CancellationToken ct = default)
     {
         _cookingMethodRepository.Add(cookingMethod);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
     #region Read methods
@@ -47,6 +50,10 @@ public class CookingMethodManager : ICookingMethodManager
     public async Task<CookingMethod?> UpdateScoreAsync(string id, string newValue, CancellationToken ct = default)
     {
         var result = await _cookingMethodRepository.UpdateScoreAsync(id, newValue, ct);
+        if (result is not null)
+        {
+            await _unitOfWork.SaveChangesAsync(ct);
+        }
         return result;
     }
     #endregion
@@ -54,6 +61,7 @@ public class CookingMethodManager : ICookingMethodManager
     public async Task RemoveAsync(CookingMethod cookingMethod, CancellationToken ct = default)
     {
         _cookingMethodRepository.Remove(cookingMethod);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
 }

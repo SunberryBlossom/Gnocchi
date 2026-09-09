@@ -7,17 +7,20 @@ public class VariantManager : IVariantManager
 {
     #region Fields
     private readonly IVariantRepository _variantRepository;
+    private readonly IUnitOfWork _unitOfWork;
     #endregion
     #region Constructors
-    public VariantManager(IVariantRepository variantRepository)
+    public VariantManager(IVariantRepository variantRepository, IUnitOfWork unitOfWork)
     {
         _variantRepository = variantRepository;
+        _unitOfWork = unitOfWork;
     }
     #endregion
     #region Create methods
-    public async void Add(Variant variant)
+    public async Task AddAsync(Variant variant, CancellationToken ct = default)
     {
         _variantRepository.Add(variant);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
     #region Read methods
@@ -37,9 +40,10 @@ public class VariantManager : IVariantManager
     #region Update methods
     #endregion
     #region Delete methods
-    public void Remove(Variant variant)
+    public async Task RemoveAsync(Variant variant, CancellationToken ct = default)
     {
         _variantRepository.Remove(variant);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
 }

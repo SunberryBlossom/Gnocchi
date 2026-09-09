@@ -7,17 +7,20 @@ public class ResultManager : IResultManager
 {
     #region Fields
     private readonly IResultRepository _resultRepository;
+    private readonly IUnitOfWork _unitOfWork;
     #endregion
     #region Constructors
-    public ResultManager(IResultRepository resultRepository)
+    public ResultManager(IResultRepository resultRepository, IUnitOfWork unitOfWork)
     {
         _resultRepository = resultRepository;
+        _unitOfWork = unitOfWork;
     }
     #endregion
     #region Create methods
     public async Task AddAsync(Result result, CancellationToken ct = default)
     {
         _resultRepository.Add(result);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
     #region Read methods
@@ -48,6 +51,10 @@ public class ResultManager : IResultManager
     public async Task<Result?> UpdateCommentAsync(string id, string newValue, CancellationToken ct = default)
     {
         var result = await _resultRepository.UpdateCommentAsync(id, newValue, ct);
+        if (result is not null)
+        {
+            await _unitOfWork.SaveChangesAsync(ct);
+        }
         return result;
     }
     #endregion
@@ -55,6 +62,7 @@ public class ResultManager : IResultManager
     public async Task RemoveAsync(Result result, CancellationToken ct = default)
     {
         _resultRepository.Remove(result);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
 }

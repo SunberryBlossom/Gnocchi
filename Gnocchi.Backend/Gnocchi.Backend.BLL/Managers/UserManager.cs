@@ -7,17 +7,20 @@ public class UserManager : IUserManager
 {
     #region Fields
     private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
     #endregion
     #region Constructors
-    public UserManager(IUserRepository userRepository)
+    public UserManager(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
     #endregion
     #region Create methods
     public async Task AddAsync(User user, CancellationToken ct = default)
     {
         _userRepository.Add(user);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
     #region Read methods
@@ -40,6 +43,7 @@ public class UserManager : IUserManager
     public async Task RemoveAsync(User user, CancellationToken ct = default)
     {
         _userRepository.Remove(user);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
 }

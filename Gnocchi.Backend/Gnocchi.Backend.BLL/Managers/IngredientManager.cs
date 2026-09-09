@@ -7,17 +7,20 @@ public class IngredientManager : IIngredientManager
 {
     #region Fields
     private readonly IIngredientRepository _ingredientRepository;
+    private readonly IUnitOfWork _unitOfWork;
     #endregion
     #region Constructors
-    public IngredientManager(IIngredientRepository ingredientRepository)
+    public IngredientManager(IIngredientRepository ingredientRepository, IUnitOfWork unitOfWork)
     {
         _ingredientRepository = ingredientRepository;
+        _unitOfWork = unitOfWork;
     }
     #endregion
     #region Create methods
     public async Task AddAsync(Ingredient ingredient, CancellationToken ct = default)
     {
         _ingredientRepository.Add(ingredient);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
     #region Read methods
@@ -53,6 +56,10 @@ public class IngredientManager : IIngredientManager
             "score" => await _ingredientRepository.UpdateScoreAsync(id, newValue, ct),
             _ => null
         };
+        if (result is not null)
+        {
+            await _unitOfWork.SaveChangesAsync(ct);
+        }
         return result;
     }
     #endregion
@@ -60,6 +67,7 @@ public class IngredientManager : IIngredientManager
     public async Task RemoveAsync(Ingredient ingredient, CancellationToken ct = default)
     {
         _ingredientRepository.Remove(ingredient);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
     #endregion
 }
