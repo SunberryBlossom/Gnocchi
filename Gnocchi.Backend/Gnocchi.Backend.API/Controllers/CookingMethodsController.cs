@@ -39,4 +39,28 @@ public class CookingMethodsController : ControllerBase
         
         return Ok(CookingMethodDTO);
     }
+
+    [HttpPost]
+    public async Task<ActionResult<CookingMethodDTO>> Post([FromBody]CreateCookingMethodDTO DTO)
+    {
+        var result = await _cookingMethodService.AddCookingMethodAsync(DTO);
+
+        return Created(result.CookingMethodId, result);
+    }
+
+    [HttpPatch]
+    public async Task<ActionResult<CookingMethodDTO>> Patch([FromBody]UpdateCookingMethodDTO DTO)
+    {
+        var result = await _cookingMethodService.UpdateCookingMethodAsync(DTO);
+
+        return Ok(result);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromBody]DeleteCookingMethodDTO DTO)
+    {
+        await _cookingMethodService.DeleteCookingMethodAsync(DTO);
+
+        return NoContent();
+    }
 }
