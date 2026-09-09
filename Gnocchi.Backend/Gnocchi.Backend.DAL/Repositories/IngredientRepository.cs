@@ -22,7 +22,7 @@ public class IngredientRepository : IIngredientRepository
     #region Read methods
     public async Task<IReadOnlyList<Ingredient>> GetAllAsync(CancellationToken ct = default)
     {
-        return await _dbContext.Ingredients.ToListAsync(ct);
+        return await _dbContext.Ingredients.AsNoTracking().ToListAsync(ct);
     }
     public async Task<Ingredient?> GetAsync(string id, CancellationToken ct = default)
     {
