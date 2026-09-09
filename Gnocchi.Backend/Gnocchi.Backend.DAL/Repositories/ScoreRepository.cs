@@ -20,7 +20,7 @@ public class ScoreRepository : IScoreRepository
     #region Read methods
     public async Task<IReadOnlyList<Score>> GetAllAsync(CancellationToken ct = default)
     {
-        return await _dbContext.Scores.ToListAsync(ct);
+        return await _dbContext.Scores.AsNoTracking().ToListAsync(ct);
     }
     public async Task<Score?> GetAsync(string id, CancellationToken ct = default)
     {
@@ -65,7 +65,7 @@ public class ScoreRepository : IScoreRepository
     #region Update methods
     #endregion
     #region Delete methods
-    public async void Remove(Score score)
+    public void Remove(Score score)
     {
         _dbContext.Scores.Remove(score);
     }
