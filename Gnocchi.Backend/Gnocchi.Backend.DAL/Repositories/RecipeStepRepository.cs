@@ -31,17 +31,17 @@ public class RecipeStepRepository : IRecipeStepRepository
     {
         return await _dbContext.RecipeSteps
         .Where(rs => rs.RecipeStepId == id)
-        .Include(rs => rs.Dish)
-        .Include(rs => rs.Result)
+        // .Include(rs => rs.Dish)
+        // .Include(rs => rs.Result)
         .AsNoTracking()
-        .AsSplitQuery()
+        // .AsSplitQuery()
         .FirstOrDefaultAsync(ct);
     }
     public async Task<RecipeStep?> GetWithDishAsync(string id, CancellationToken ct = default)
     {
         return await _dbContext.RecipeSteps
         .Where(rs => rs.RecipeStepId == id)
-        .Include(rs => rs.Dish)
+        // .Include(rs => rs.Dish)
         .AsNoTracking()
         .FirstOrDefaultAsync(ct);
     }
@@ -49,7 +49,7 @@ public class RecipeStepRepository : IRecipeStepRepository
     {
         return await _dbContext.RecipeSteps
         .Where(rs => rs.RecipeStepId == id)
-        .Include(rs => rs.Result)
+        // .Include(rs => rs.Result)
         .AsNoTracking()
         .FirstOrDefaultAsync(ct);
     }
