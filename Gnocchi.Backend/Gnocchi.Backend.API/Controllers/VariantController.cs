@@ -20,11 +20,6 @@ public class VariantsController : ControllerBase
     public async Task<ActionResult<IReadOnlyList<VariantDTO>>> Get()
     {
         var variantDTOs = await _variantService.GetAllVariantsAsync();
-        if (!variantDTOs.Any())
-        {
-            return NotFound();
-        }
-
         return Ok(variantDTOs);
     }
 

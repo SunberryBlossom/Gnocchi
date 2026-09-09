@@ -20,11 +20,6 @@ public class ResultsController : ControllerBase
     public async Task<ActionResult<IReadOnlyList<ResultDTO>>> Get()
     {
         var resultDTOs = await _resultService.GetAllResultsAsync();
-        if (!resultDTOs.Any())
-        {
-            return NotFound();
-        }
-
         return Ok(resultDTOs);
     }
 

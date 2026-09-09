@@ -21,11 +21,6 @@ private readonly IScoreService _scoreService;
     public async Task<ActionResult<IReadOnlyList<ScoreDTO>>> Get()
     {
         var scoreDTOs = await _scoreService.GetAllScoresAsync();
-        if (!scoreDTOs.Any())
-        {
-            return NotFound();
-        }
-
         return Ok(scoreDTOs);
     }
 

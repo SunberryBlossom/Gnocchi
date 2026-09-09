@@ -20,11 +20,6 @@ public class IngredientsController : ControllerBase
     public async Task<ActionResult<IReadOnlyList<IngredientDTO>>> Get()
     {
         var ingredientDTOs = await _ingredientService.GetAllIngredientsAsync();
-        if (!ingredientDTOs.Any())
-        {
-            return NotFound();
-        }
-
         return Ok(ingredientDTOs);
     }
 

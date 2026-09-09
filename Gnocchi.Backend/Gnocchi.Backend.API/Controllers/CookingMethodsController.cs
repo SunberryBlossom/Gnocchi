@@ -20,11 +20,6 @@ public class CookingMethodsController : ControllerBase
     public async Task<ActionResult<IReadOnlyList<CookingMethodDTO>>> Get()
     {
         var cookingMethodDTOs = await _cookingMethodService.GetAllCookingMethodsAsync();
-        if (!cookingMethodDTOs.Any())
-        {
-            return NotFound();
-        }
-
         return Ok(cookingMethodDTOs);
     }
 

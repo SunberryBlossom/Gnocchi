@@ -21,11 +21,6 @@ private readonly IDishService _dishService;
     public async Task<ActionResult<IReadOnlyList<DishDTO>>> Get()
     {
         var dishDTOs = await _dishService.GetAllDishesAsync();
-        if (!dishDTOs.Any())
-        {
-            return NotFound();
-        }
-
         return Ok(dishDTOs);
     }
 
@@ -48,7 +43,14 @@ private readonly IDishService _dishService;
     {
         var dish = await _dishService.AddDishAsync(DTO);
 
-        return Created(dish.DishId, dish);
+        return CreatedAtAction(nameof(GetById), new { id = dish.DishId }, dish);
+    }
+
+    [HttpPatch]
+    public async Task<ActionResult<DishDTO>> Patch([FromBody]UpdateDishDTO DTO)
+    {
+        var dish = await _dishService.UpdateDishAsync(DTO);
+        return Ok(dish);
     }
 
     [HttpDelete]
