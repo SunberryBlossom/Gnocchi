@@ -37,7 +37,7 @@ public class IngredientService : IIngredientService
             EdibleRaw = createIngredientDTO.EdibleRaw,
             ScoreId = score.ScoreId,
             Score = score,
-            Results = createIngredientDTO.Results
+            Results = createIngredientDTO.ResultIds.Select(id => new Result { ResultId = id }).ToList()
         };
 
         await _ingredientManager.AddAsync(ingredient, ct);
@@ -47,8 +47,7 @@ public class IngredientService : IIngredientService
             IngredientId = ingredient.IngredientId,
             Name = ingredient.Name,
             EdibleRaw = ingredient.EdibleRaw,
-            ScoreId = ingredient.ScoreId ??= string.Empty,
-            Results = ingredient.Results
+            ResultIds = ingredient.Results?.Select(result => result.ResultId!).ToList() ?? new List<string>()
         };
     }
 
@@ -73,8 +72,7 @@ public class IngredientService : IIngredientService
             IngredientId = ingredient.IngredientId!,
             Name = ingredient.Name ??= string.Empty,
             EdibleRaw = ingredient.EdibleRaw,
-            ScoreId = ingredient.ScoreId ??= string.Empty,
-            Results = ingredient.Results
+            ResultIds = ingredient.Results?.Select(result => result.ResultId!).ToList() ?? new List<string>()
         }).ToList();
     }
 
@@ -92,8 +90,7 @@ public class IngredientService : IIngredientService
             IngredientId = ingredient.IngredientId!,
             Name = ingredient.Name ??= string.Empty,
             EdibleRaw = ingredient.EdibleRaw,
-            ScoreId = ingredient.ScoreId ??= string.Empty,
-            Results = ingredient.Results
+            ResultIds = ingredient.Results?.Select(result => result.ResultId!).ToList() ?? new List<string>()
         };
     }
 
@@ -119,8 +116,7 @@ public class IngredientService : IIngredientService
             IngredientId = ingredient.IngredientId!,
             Name = ingredient.Name ??= string.Empty,
             EdibleRaw = ingredient.EdibleRaw,
-            ScoreId = ingredient.ScoreId ??= string.Empty,
-            Results = ingredient.Results
+            ResultIds = ingredient.Results?.Select(result => result.ResultId!).ToList() ?? new List<string>()
         };
     }
 }

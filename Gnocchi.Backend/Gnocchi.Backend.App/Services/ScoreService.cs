@@ -19,9 +19,9 @@ public class ScoreService : IScoreService
         {
             ScoreId = Guid.NewGuid().ToString(),
             Rating = createScoreDTO.Rating,
-            Dishes = createScoreDTO.Dishes,
-            CookingMethods = createScoreDTO.CookingMethods,
-            Ingredients = createScoreDTO.Ingredients
+            Dishes = createScoreDTO.DishIds.Select(id => new Dish { DishId = id }).ToList(),
+            CookingMethods = createScoreDTO.CookingMethodIds.Select(id => new CookingMethod { CookingMethodId = id }).ToList(),
+            Ingredients = createScoreDTO.IngredientIds.Select(id => new Ingredient { IngredientId = id }).ToList()
         };
         
         await _scoreManager.AddAsync(score, ct);
@@ -30,9 +30,9 @@ public class ScoreService : IScoreService
         {
             ScoreId = score.ScoreId,
             Rating = score.Rating,
-            Dishes = score.Dishes,
-            CookingMethods = score.CookingMethods,
-            Ingredients = score.Ingredients
+            Dishes = score.Dishes?.Select(d => d.DishId ?? string.Empty).ToList() ?? new List<string>(),
+            CookingMethods = score.CookingMethods?.Select(cm => cm.CookingMethodId ?? string.Empty).ToList() ?? new List<string>(),
+            Ingredients = score.Ingredients?.Select(i => i.IngredientId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 
@@ -52,18 +52,18 @@ public class ScoreService : IScoreService
     {
         var scores = await _scoreManager.GetAllAsync(ct);
 
-        if (!scores.Any())
+        if (scores is null || !scores.Any())
         {
             return new List<ScoreDTO>();
         }
 
         return scores.Select(score => new ScoreDTO
         {
-            ScoreId = score.ScoreId,
+            ScoreId = score.ScoreId ?? string.Empty,
             Rating = score.Rating,
-            Dishes = score.Dishes,
-            CookingMethods = score.CookingMethods,
-            Ingredients = score.Ingredients
+            Dishes = score.Dishes?.Select(d => d.DishId ?? string.Empty).ToList() ?? new List<string>(),
+            CookingMethods = score.CookingMethods?.Select(cm => cm.CookingMethodId ?? string.Empty).ToList() ?? new List<string>(),
+            Ingredients = score.Ingredients?.Select(i => i.IngredientId ?? string.Empty).ToList() ?? new List<string>()
         }).ToList();
     }
 
@@ -78,11 +78,11 @@ public class ScoreService : IScoreService
 
         return new ScoreDTO
         {
-            ScoreId = score.ScoreId!,
+            ScoreId = score.ScoreId ?? string.Empty,
             Rating = score.Rating,
-            Dishes = score.Dishes ??= new List<Dish>(),
-            CookingMethods = score.CookingMethods ??= new List<CookingMethod>() ,
-            Ingredients = score.Ingredients ??= new List<Ingredient>()
+            Dishes = score.Dishes?.Select(d => d.DishId ?? string.Empty).ToList() ?? new List<string>(),
+            CookingMethods = score.CookingMethods?.Select(cm => cm.CookingMethodId ?? string.Empty).ToList() ?? new List<string>(),
+            Ingredients = score.Ingredients?.Select(i => i.IngredientId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 }

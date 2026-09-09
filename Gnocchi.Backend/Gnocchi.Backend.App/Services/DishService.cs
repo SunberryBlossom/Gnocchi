@@ -35,7 +35,7 @@ public class DishService : IDishService
             Variant = variant,
             ScoreId = score.ScoreId,
             Score = score,
-            RecipeSteps = createDishDTO.RecipeSteps
+            RecipeSteps = createDishDTO.RecipeStepIds.Select(id => new RecipeStep { RecipeStepId = id }).ToList()
         };
 
         await _dishManager.AddAsync(dish, ct);
@@ -44,9 +44,7 @@ public class DishService : IDishService
         {
             DishId = dish.DishId,
             Name = dish.Name,
-            VariantId = dish.VariantId,
-            ScoreId = dish.ScoreId,
-            RecipeSteps = dish.RecipeSteps.ToList()
+            RecipeStepIds = dish.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 
@@ -73,11 +71,9 @@ public class DishService : IDishService
 
         return dishes.Select(dish => new DishDTO
         {
-            DishId = dish.DishId,
-            Name = dish.Name,
-            VariantId = dish.VariantId,
-            ScoreId = dish.ScoreId,
-            RecipeSteps = dish.RecipeSteps.ToList()
+            DishId = dish.DishId ?? string.Empty,
+            Name = dish.Name ?? string.Empty,
+            RecipeStepIds = dish.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         }).ToList();
 
 
@@ -94,11 +90,9 @@ public class DishService : IDishService
 
         return new DishDTO
         {
-            DishId = dish.DishId,
-            Name = dish.Name,
-            VariantId = dish.VariantId,
-            ScoreId = dish.ScoreId,
-            RecipeSteps = dish.RecipeSteps.ToList()
+            DishId = dish.DishId ?? string.Empty,
+            Name = dish.Name ?? string.Empty,
+            RecipeStepIds = dish.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 
@@ -122,11 +116,9 @@ public class DishService : IDishService
 
         return new DishDTO
         {
-            DishId = dish.DishId,
-            Name = dish.Name,
-            VariantId = dish.VariantId,
-            ScoreId = dish.ScoreId,
-            RecipeSteps = dish.RecipeSteps.ToList()
+            DishId = dish.DishId ?? string.Empty,
+            Name = dish.Name ?? string.Empty,
+            RecipeStepIds = dish.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 

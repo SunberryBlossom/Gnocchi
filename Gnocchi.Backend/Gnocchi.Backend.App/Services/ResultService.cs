@@ -40,7 +40,7 @@ public class ResultService : IResultService
             Ingredient = ingredient,
             CookingMethodId = cookingMethod.CookingMethodId,
             CookingMethod = cookingMethod,
-            RecipeSteps = createResultDTO.RecipeSteps
+            RecipeSteps = createResultDTO.RecipeStepIds.Select(id => new RecipeStep { RecipeStepId = id }).ToList()
         };
 
         await _resultManager.AddAsync(result, ct);
@@ -49,9 +49,7 @@ public class ResultService : IResultService
         {
             ResultId = result.ResultId,
             Comment = result.Comment,
-            IngredientId = result.IngredientId ??= string.Empty,
-            CookingMethodId = result.CookingMethodId ??= string.Empty,
-            RecipeSteps = result.RecipeSteps.ToList()
+            RecipeStepIds = result.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 
@@ -78,11 +76,9 @@ public class ResultService : IResultService
 
         return results.Select(result => new ResultDTO
         {
-            ResultId = result.ResultId!,
-            Comment = result.Comment ??= string.Empty,
-            IngredientId = result.IngredientId!,
-            CookingMethodId = result.CookingMethodId!,
-            RecipeSteps = result.RecipeSteps.ToList() ?? new List<RecipeStep>()
+            ResultId = result.ResultId ?? string.Empty,
+            Comment = result.Comment ?? string.Empty,
+            RecipeStepIds = result.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         }).ToList();
     }
 
@@ -97,11 +93,9 @@ public class ResultService : IResultService
 
         return new ResultDTO
         {
-            ResultId = result.ResultId!,
-            Comment = result.Comment ??= string.Empty,
-            IngredientId = result.IngredientId!,
-            CookingMethodId = result.CookingMethodId!,
-            RecipeSteps = result.RecipeSteps.ToList() ?? new List<RecipeStep>()
+            ResultId = result.ResultId ?? string.Empty,
+            Comment = result.Comment ?? string.Empty,
+            RecipeStepIds = result.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 
@@ -123,11 +117,9 @@ public class ResultService : IResultService
 
         return new ResultDTO
         {
-            ResultId = result.ResultId!,
-            Comment = result.Comment ??= string.Empty,
-            IngredientId = result.IngredientId!,
-            CookingMethodId = result.CookingMethodId!,
-            RecipeSteps = result.RecipeSteps.ToList() ?? new List<RecipeStep>()
+            ResultId = result.ResultId ?? string.Empty,
+            Comment = result.Comment ?? string.Empty,
+            RecipeStepIds = result.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 }

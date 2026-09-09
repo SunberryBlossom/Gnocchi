@@ -18,17 +18,17 @@ public class VariantService : IVariantService
         {
             VariantId = Guid.NewGuid().ToString(),
             Type = createVariantDTO.Type,
-            Dishes = createVariantDTO.Dishes
+            Dishes = createVariantDTO.DishIds.Select(id => new Dish { DishId = id }).ToList()
 
         };
 
-        _variantManager.Add(variant);
+        await _variantManager.AddAsync(variant, ct);
 
         return new VariantDTO
         {
-            VariantId = variant.VariantId,
+            VariantId = variant.VariantId ?? string.Empty,
             Type = variant.Type,
-            Dishes = variant.Dishes.ToList()
+            Dishes = variant.Dishes?.Select(d => d.DishId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 
@@ -41,7 +41,7 @@ public class VariantService : IVariantService
             throw new NullReferenceException(message: "This ID does not belong to any variant!");
         }
 
-        _variantManager.Remove(variant);
+        await _variantManager.RemoveAsync(variant, ct);
     }
 
     public async Task<IReadOnlyList<VariantDTO>> GetAllVariantsAsync(CancellationToken ct = default)
@@ -55,9 +55,9 @@ public class VariantService : IVariantService
 
         return variants.Select(variant => new VariantDTO
         {
-            VariantId = variant.VariantId,
+            VariantId = variant.VariantId ?? string.Empty,
             Type = variant.Type,
-            Dishes = variant.Dishes.ToList()
+            Dishes = variant.Dishes?.Select(d => d.DishId ?? string.Empty).ToList() ?? new List<string>()
         }).ToList();
     }
 
@@ -72,9 +72,9 @@ public class VariantService : IVariantService
 
         return new VariantDTO
         {
-            VariantId = variant.VariantId,
+            VariantId = variant.VariantId ?? string.Empty,
             Type = variant.Type,
-            Dishes = variant.Dishes.ToList()
+            Dishes = variant.Dishes?.Select(d => d.DishId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 }

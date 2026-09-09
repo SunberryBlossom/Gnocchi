@@ -30,7 +30,7 @@ public class CookingMethodService : ICookingMethodService
             Method = createCookingMethodDTO.Method,
             ScoreId = score.ScoreId,
             Score = score,
-            Results = createCookingMethodDTO.Results
+            Results = createCookingMethodDTO.ResultIds.Select(id => new Result { ResultId = id }).ToList()
         };
 
         await _cookingMethodManager.AddAsync(cookingMethod, ct);
@@ -39,8 +39,7 @@ public class CookingMethodService : ICookingMethodService
         {
             CookingMethodId = cookingMethod.CookingMethodId,
             Method = cookingMethod.Method,
-            ScoreId = cookingMethod.ScoreId ??= string.Empty,
-            Results = cookingMethod.Results
+            Results = cookingMethod.Results?.Select(r => r.ResultId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 
@@ -60,18 +59,16 @@ public class CookingMethodService : ICookingMethodService
     {
         var cookingMethods = await _cookingMethodManager.GetAllAsync(ct);
 
-        if (!cookingMethods.Any())
+        if (cookingMethods is null || !cookingMethods.Any())
         {
             return new List<CookingMethodDTO>();
         }
 
         return cookingMethods.Select(cookingMethod => new CookingMethodDTO
         {
-            CookingMethodId = cookingMethod.CookingMethodId!,
+            CookingMethodId = cookingMethod.CookingMethodId ?? string.Empty,
             Method = cookingMethod.Method,
-            ScoreId = cookingMethod.ScoreId ??= string.Empty,
-            Results = cookingMethod.Results ?? new List<Result>()
-
+            Results = cookingMethod.Results?.Select(r => r.ResultId ?? string.Empty).ToList() ?? new List<string>()
         }).ToList();
     }
 
@@ -86,10 +83,9 @@ public class CookingMethodService : ICookingMethodService
 
         return new CookingMethodDTO
         {
-            CookingMethodId = cookingMethod.CookingMethodId!,
+            CookingMethodId = cookingMethod.CookingMethodId ?? string.Empty,
             Method = cookingMethod.Method,
-            ScoreId = cookingMethod.ScoreId ??= string.Empty,
-            Results = cookingMethod.Results ?? new List<Result>()
+            Results = cookingMethod.Results?.Select(r => r.ResultId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 
@@ -111,10 +107,9 @@ public class CookingMethodService : ICookingMethodService
 
         return new CookingMethodDTO
         {
-            CookingMethodId = cookingMethod.CookingMethodId!,
+            CookingMethodId = cookingMethod.CookingMethodId ?? string.Empty,
             Method = cookingMethod.Method,
-            ScoreId = cookingMethod.ScoreId ??= string.Empty,
-            Results = cookingMethod.Results ?? new List<Result>()
+            Results = cookingMethod.Results?.Select(r => r.ResultId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
 }
