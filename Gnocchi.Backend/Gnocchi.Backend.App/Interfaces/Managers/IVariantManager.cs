@@ -5,7 +5,7 @@ namespace Gnocchi.Backend.App.Interfaces;
 public interface IVariantManager
 {
     #region Create signatures
-    public void Add(Variant variant);
+    public Task AddAsync(Variant variant, CancellationToken ct = default);
     #endregion
     #region Read signatures
     public Task<Variant?> GetByIdAsync(string id, CancellationToken ct = default);
@@ -15,6 +15,6 @@ public interface IVariantManager
     #region Update signatures
     #endregion
     #region Delete signatures
-    public void Remove(Variant variant);
+    public Task RemoveAsync(Variant variant, CancellationToken ct = default);
     #endregion
 }
