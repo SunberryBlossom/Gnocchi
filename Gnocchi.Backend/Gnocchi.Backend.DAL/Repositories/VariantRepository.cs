@@ -20,7 +20,7 @@ public class VariantRepository : IVariantRepository
     #region Read methods
     public async Task<IReadOnlyList<Variant>> GetAllAsync(CancellationToken ct = default)
     {
-        return await _dbContext.Variants.ToListAsync(ct);
+        return await _dbContext.Variants.AsNoTracking().ToListAsync(ct);
     }
     public async Task<Variant?> GetAsync(string id, CancellationToken ct = default)
     {
