@@ -4,6 +4,7 @@ using Gnocchi.Backend.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gnocchi.Backend.DAL.Migrations
 {
     [DbContext(typeof(GnocchiDbContext))]
-    partial class GnocchiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260909120345_AlignEntityValidationConstraints")]
+    partial class AlignEntityValidationConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
