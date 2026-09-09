@@ -20,7 +20,7 @@ public class UserRepository : IUserRepository
     #region Read methods
     public async Task<IReadOnlyList<User>> GetAllAsync(CancellationToken ct = default)
     {
-        return await _dbContext.Users.ToListAsync(ct);
+        return await _dbContext.Users.AsNoTracking().ToListAsync(ct);
     }
     public async Task<User?> GetAsync(string id, CancellationToken ct = default)
     {
