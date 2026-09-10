@@ -1,6 +1,5 @@
 using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.API.Identity;
-using Gnocchi.Backend.API.Middleware;
 using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.App.Services;
 using Gnocchi.Backend.BLL.Interfaces;
@@ -35,6 +34,15 @@ public class Program
         builder.Services.AddScoped<IUnitOfWork>(services => services.GetRequiredService<GnocchiDbContext>());
         builder.Services.AddIdentityApiEndpoints<User>(options => options.User.RequireUniqueEmail = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<GnocchiDbContext>();
         builder.Services.AddControllers();
+        builder.Services.AddExceptionHandler(exceptionOptions =>
+        {
+            exceptionOptions.ExceptionHandler = async context =>
+            {
+                var exception = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>()?.Error;
+                context.Response.StatusCode = exception is NullReferenceException ? StatusCodes.Status404NotFound : StatusCodes.Status500InternalServerError;
+                await context.Response.CompleteAsync();
+            };
+        });
         builder.Services.AddProblemDetails();
         builder.Services.AddOpenApi();
         builder.Services.AddAuthorization();
@@ -68,7 +76,7 @@ public class Program
         #endregion
         #region Middleware configuration
         var app = builder.Build();
-        app.UseMiddleware<ExceptionMiddleware>();
+        app.UseExceptionHandler();
         if (app.Environment.IsDevelopment())
         {
             using var scope = app.Services.CreateScope();
