@@ -1,4 +1,5 @@
 using Gnocchi.Backend.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore; // To inherit from superclass IdentityDbContext<T>
 using Microsoft.EntityFrameworkCore; // To use DbSet
 
@@ -7,6 +8,7 @@ namespace Gnocchi.Backend.DAL;
 public class GnocchiDbContext : IdentityDbContext<User>, IUnitOfWork
 {
     private readonly ICurrentUserAccessor _currentUser;
+    private const string AdminRoleId = "8f4c3b1a-2d5e-4f6a-9b7c-1e2f3a4b5c6d";
 
     #region Constructors
     public GnocchiDbContext(
@@ -37,6 +39,17 @@ public class GnocchiDbContext : IdentityDbContext<User>, IUnitOfWork
         builder.Entity<Result>().HasQueryFilter(entity => _currentUser.IsAdmin || entity.UserId == _currentUser.UserId);
         builder.Entity<Score>().HasQueryFilter(entity => _currentUser.IsAdmin || entity.UserId == _currentUser.UserId);
         builder.Entity<Variant>().HasQueryFilter(entity => _currentUser.IsAdmin || entity.UserId == _currentUser.UserId);
+
+        builder.Entity<IdentityRole>().HasData(
+            new IdentityRole
+            {
+                Id = AdminRoleId,
+                Name = "admin",
+                NormalizedName = "ADMIN",
+            }
+        );
+
+
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
