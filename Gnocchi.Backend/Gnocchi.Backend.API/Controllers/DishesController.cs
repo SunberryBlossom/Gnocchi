@@ -43,7 +43,7 @@ private readonly IDishService _dishService;
     {
         var dish = await _dishService.AddDishAsync(DTO);
 
-        return CreatedAtAction(nameof(GetById), new { id = dish.DishId }, dish);
+        return Ok(dish);
     }
 
     [HttpPatch]

@@ -57,6 +57,7 @@ public class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         #endregion
         #region Managers
+        builder.Services.AddScoped<IRecipeStepManager, RecipeStepManager>();
         builder.Services.AddScoped<IDishManager, DishManager>();
         builder.Services.AddScoped<ICookingMethodManager, CookingMethodManager>();
         builder.Services.AddScoped<IIngredientManager, IngredientManager>();
@@ -67,6 +68,7 @@ public class Program
         #endregion
         #endregion
         #region Services
+        builder.Services.AddScoped<IRecipeStepService, RecipeStepService>();
         builder.Services.AddScoped<IDishService, DishService>();
         builder.Services.AddScoped<IVariantService, VariantService>();
         builder.Services.AddScoped<IScoreService, ScoreService>();
