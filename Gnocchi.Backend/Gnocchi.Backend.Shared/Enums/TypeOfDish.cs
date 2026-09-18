@@ -1,12 +1,13 @@
 ﻿namespace Gnocchi.Backend.Shared.Enums;
 
-[Flags] // To be able to combine enum values
-// TODO: Ask M about different types/specialties when it comes to cooking
 public enum TypeOfDish
 {
-    Vegetarian,
-    Vegan,
-    Pescitarian,
-    LCHF,
-    WithoutOnions,
+    Vegetarian = 0,
+    Vegan = 1,
+    Pescitarian = 2,
+    LCHF = 3,
+    WithoutOnions = 4,
+    GlutenFree = 5,
+    LactoseFree = 6,
+    Keto = 7
 }
