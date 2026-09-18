@@ -2,7 +2,6 @@ using Gnocchi.Backend.API.Interfaces;
 using Gnocchi.Backend.App.DTOs;
 using Gnocchi.Backend.App.Interfaces;
 using Gnocchi.Backend.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Gnocchi.Backend.App.Services;
 
@@ -11,6 +10,7 @@ public class ResultService : IResultService
     private readonly IResultManager _resultManager;
     private readonly IIngredientManager _ingredientManager;
     private readonly ICookingMethodManager _cookingMethodManager;
+
     public ResultService
     (
         IResultManager resultManager,
@@ -22,6 +22,7 @@ public class ResultService : IResultService
         _ingredientManager = ingredientManager;
         _cookingMethodManager = cookingMethodManager;
     }
+
     public async Task<ResultDTO> AddResultAsync(CreateResultDTO createResultDTO, CancellationToken ct = default)
     {
         var ingredient = await _ingredientManager.GetByIdAsync(createResultDTO.IngredientId, ct);
@@ -29,7 +30,7 @@ public class ResultService : IResultService
 
         if (ingredient is null || cookingMethod is null)
         {
-            throw new NullReferenceException(message: "either the ingredient or cookingmethod is non existent!");
+            throw new NullReferenceException(message: "Either the ingredient or cookingmethod does not exist!");
         }
 
         Result result = new()
@@ -40,7 +41,7 @@ public class ResultService : IResultService
             Ingredient = ingredient,
             CookingMethodId = cookingMethod.CookingMethodId,
             CookingMethod = cookingMethod,
-            RecipeSteps = createResultDTO.RecipeStepIds.Select(id => new RecipeStep { RecipeStepId = id }).ToList()
+            RecipeSteps = createResultDTO.RecipeStepIds?.Select(id => new RecipeStep { RecipeStepId = id }).ToList() ?? new List<RecipeStep>()
         };
 
         await _resultManager.AddAsync(result, ct);
@@ -49,6 +50,8 @@ public class ResultService : IResultService
         {
             ResultId = result.ResultId,
             Comment = result.Comment,
+            IngredientId = result.IngredientId ?? string.Empty,
+            CookingMethodId = result.CookingMethodId ?? string.Empty,
             RecipeStepIds = result.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
@@ -78,6 +81,8 @@ public class ResultService : IResultService
         {
             ResultId = result.ResultId ?? string.Empty,
             Comment = result.Comment ?? string.Empty,
+            IngredientId = result.IngredientId ?? string.Empty,
+            CookingMethodId = result.CookingMethodId ?? string.Empty,
             RecipeStepIds = result.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         }).ToList();
     }
@@ -88,13 +93,15 @@ public class ResultService : IResultService
 
         if (result is null)
         {
-            throw new NullReferenceException(message: "this ID is not connected to any result!");
+            throw new NullReferenceException(message: "This ID is not connected to any result!");
         }
 
         return new ResultDTO
         {
             ResultId = result.ResultId ?? string.Empty,
             Comment = result.Comment ?? string.Empty,
+            IngredientId = result.IngredientId ?? string.Empty,
+            CookingMethodId = result.CookingMethodId ?? string.Empty,
             RecipeStepIds = result.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
@@ -105,7 +112,7 @@ public class ResultService : IResultService
 
         if (result is null)
         {
-            throw new NullReferenceException(message: "this ID is not connected to any result!");
+            throw new NullReferenceException(message: "This ID is not connected to any result!");
         }
 
         await _resultManager.UpdateCommentAsync(
@@ -114,11 +121,12 @@ public class ResultService : IResultService
             ct
         );
 
-
         return new ResultDTO
         {
             ResultId = result.ResultId ?? string.Empty,
             Comment = result.Comment ?? string.Empty,
+            IngredientId = result.IngredientId ?? string.Empty,
+            CookingMethodId = result.CookingMethodId ?? string.Empty,
             RecipeStepIds = result.RecipeSteps?.Select(rs => rs.RecipeStepId ?? string.Empty).ToList() ?? new List<string>()
         };
     }
