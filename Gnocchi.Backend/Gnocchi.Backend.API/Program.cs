@@ -33,6 +33,15 @@ public class Program
         builder.Services.AddScoped<ICurrentUserAccessor, HttpCurrentUserAccessor>();
         builder.Services.AddScoped<IUnitOfWork>(services => services.GetRequiredService<GnocchiDbContext>());
         builder.Services.AddIdentityApiEndpoints<User>(options => options.User.RequireUniqueEmail = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<GnocchiDbContext>();
+
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            });
+        }
         builder.Services.AddControllers();
         builder.Services.AddExceptionHandler(exceptionOptions =>
         {
