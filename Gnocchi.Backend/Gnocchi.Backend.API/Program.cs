@@ -24,11 +24,13 @@ public class Program
         var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 
         builder.Services.AddDbContext<GnocchiDbContext>(options => options.UseSqlServer(connectionString));
+
         builder.Services.AddCors(options => options.AddPolicy("Frontend", policy =>
-            policy.WithOrigins(allowedOrigins)
+            policy.WithOrigins(builder.Configuration["Frontend_Domain"] ?? throw new InvalidOperationException("Frontend_Domain must be configured through user secrets or the deployment environment."))
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()));
+
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<ICurrentUserAccessor, HttpCurrentUserAccessor>();
         builder.Services.AddScoped<IUnitOfWork>(services => services.GetRequiredService<GnocchiDbContext>());
