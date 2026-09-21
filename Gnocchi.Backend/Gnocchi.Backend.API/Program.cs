@@ -32,6 +32,8 @@ public class Program
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<ICurrentUserAccessor, HttpCurrentUserAccessor>();
         builder.Services.AddScoped<IUnitOfWork>(services => services.GetRequiredService<GnocchiDbContext>());
+
+        
         builder.Services.AddIdentityApiEndpoints<User>(options => options.User.RequireUniqueEmail = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<GnocchiDbContext>();
 
         if (builder.Environment.IsDevelopment())
@@ -109,7 +111,8 @@ public class Program
         app.UseCors("Frontend");
         app.UseAuthentication();
         app.UseAuthorization();
-        app.MapIdentityApi<User>();
+        var api = app.MapGroup("/api");
+        api.MapIdentityApi<User>();
         app.MapControllers();
         await app.RunAsync();
         #endregion
