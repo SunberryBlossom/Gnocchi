@@ -35,7 +35,7 @@ public class Program
         builder.Services.AddScoped<ICurrentUserAccessor, HttpCurrentUserAccessor>();
         builder.Services.AddScoped<IUnitOfWork>(services => services.GetRequiredService<GnocchiDbContext>());
 
-        
+
         builder.Services.AddIdentityApiEndpoints<User>(options => options.User.RequireUniqueEmail = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<GnocchiDbContext>();
 
         if (builder.Environment.IsDevelopment())
@@ -104,11 +104,9 @@ public class Program
                 app.Logger.LogWarning(exception, "Could not provision development Identity seed data during startup.");
             }
         }
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-            app.MapScalarApiReference();
-        }
+
+        app.MapOpenApi();
+        app.MapScalarApiReference();
         app.UseHttpsRedirection();
         app.UseCors("Frontend");
         app.UseAuthentication();
